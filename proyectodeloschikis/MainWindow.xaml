@@ -1,0 +1,96 @@
+﻿<Window x:Class="proyectodeloschikis.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:proyectodeloschikis"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- SIDEBAR -->
+        <Border Background="#1A1A2E" Grid.Column="0">
+            <StackPanel Margin="10">
+
+                <!-- TÍTULO -->
+                <TextBlock Text="DATA LAB"
+                           Foreground="#C084FC"
+                           FontSize="24"
+                           FontWeight="Bold"
+                           Margin="10"
+                           HorizontalAlignment="Center"/>
+
+                <Separator Margin="5" Background="#C084FC"/>
+
+                <!-- BOTONES -->
+                <Button Style="{DynamicResource MenuButton}" Content="Ordenamiento y Búsqueda" Click="Ordenamiento_Click"/>
+                <Button Style="{DynamicResource MenuButton}" Content="Estructuras Lineales"/>
+                <Button Style="{DynamicResource MenuButton}" Content="Calculadora (Pilas)"/>
+                <Button Style="{DynamicResource MenuButton}" Content="Árboles"/>
+                <Button Style="{DynamicResource MenuButton}" Content="Grafos"/>
+                <Button Style="{DynamicResource MenuButton}" Content="Recursividad"/>
+
+            </StackPanel>
+        </Border>
+
+        <!-- CONTENIDO -->
+        <Grid Grid.Column="1">
+            <Border Background="#121225" CornerRadius="10" Margin="10" >
+                <ContentControl x:Name="MainContent"/>
+            </Border>
+        </Grid>
+
+    </Grid>
+    
+    <!-- ESTILOS -->
+    <Window.Resources>
+
+        <!-- BOTONES FUTURISTAS -->
+        <Style x:Key="MenuButton" TargetType="Button">
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Height" Value="45"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="#2A2A40"/>
+            <Setter Property="BorderBrush" Value="#C084FC"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Cursor" Value="Hand"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="10"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+
+                            <!-- HOVER -->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#C084FC"/>
+                                <Setter Property="Foreground" Value="Black"/>
+                            </Trigger>
+
+                            <!-- CLICK -->
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#A855F7"/>
+                            </Trigger>
+
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </Window.Resources>
+</Window>
