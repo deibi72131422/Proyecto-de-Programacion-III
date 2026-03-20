@@ -27,12 +27,12 @@
                 <Separator Margin="5" Background="#C084FC"/>
 
                 <!-- BOTONES -->
-                <Button Style="{DynamicResource MenuButton}" Content="Ordenamiento y Búsqueda" Click="Ordenamiento_Click"/>
-                <Button Style="{DynamicResource MenuButton}" Content="Estructuras Lineales"/>
-                <Button Style="{DynamicResource MenuButton}" Content="Calculadora (Pilas)"/>
-                <Button Style="{DynamicResource MenuButton}" Content="Árboles"/>
-                <Button Style="{DynamicResource MenuButton}" Content="Grafos"/>
-                <Button Style="{DynamicResource MenuButton}" Content="Recursividad"/>
+                <Button Style="{StaticResource  MenuButton}" Content="Ordenamiento y Búsqueda" Click="Ordenamiento_Click"/>
+                <Button Style="{StaticResource MenuButton}" Content="Estructuras Lineales"/>
+                <Button Style="{StaticResource MenuButton}" Content="Calculadora (Pilas)"/>
+                <Button Style="{StaticResource MenuButton}" Content="Árboles"/>
+                <Button Style="{StaticResource MenuButton}" Content="Grafos"/>
+                <Button Style="{StaticResource MenuButton}" Content="Recursividad"/>
 
             </StackPanel>
         </Border>
@@ -45,52 +45,4 @@
         </Grid>
 
     </Grid>
-    
-    <!-- ESTILOS -->
-    <Window.Resources>
-
-        <!-- BOTONES FUTURISTAS -->
-        <Style x:Key="MenuButton" TargetType="Button">
-            <Setter Property="Margin" Value="5"/>
-            <Setter Property="Height" Value="45"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="Background" Value="#2A2A40"/>
-            <Setter Property="BorderBrush" Value="#C084FC"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Cursor" Value="Hand"/>
-
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border x:Name="border"
-                                Background="{TemplateBinding Background}"
-                                CornerRadius="10"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}">
-
-                            <ContentPresenter HorizontalAlignment="Center"
-                                              VerticalAlignment="Center"/>
-                        </Border>
-
-                        <ControlTemplate.Triggers>
-
-                            <!-- HOVER -->
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="#C084FC"/>
-                                <Setter Property="Foreground" Value="Black"/>
-                            </Trigger>
-
-                            <!-- CLICK -->
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="#A855F7"/>
-                            </Trigger>
-
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-    </Window.Resources>
 </Window>

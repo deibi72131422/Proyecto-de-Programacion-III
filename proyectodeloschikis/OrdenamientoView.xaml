@@ -5,35 +5,184 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:proyectodeloschikis"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Background="#121225">
-        <StackPanel Margin="20">
+          >
+    <Grid Margin="20">
 
-            <TextBlock Text="Ordenamiento y Búsqueda"
-                   FontSize="22"
-                   Foreground="#C084FC"
-                   Margin="0,0,0,10"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
 
-            <TextBox x:Name="txtNumero"
-                 Height="35"
-                 Margin="0,0,0,10"
-                 />
+        <!-- 🔹 PANEL IZQUIERDO -->
+        <StackPanel Grid.Column="0" Margin="10">
 
-            <Button Content="Agregar"
-                Click="Agregar_Click"
-                Margin="0,0,0,10"/>
+            <TextBlock Text="Generar Datos"
+                       Foreground="#C084FC"
+                       FontSize="18"
+                       Margin="0,0,0,10"/>
 
-            <ListBox x:Name="listaDatos" Height="150"/>
+            <StackPanel Orientation="Horizontal">
+                <TextBox x:Name="txtCantidad"
+                         Width="100"
+                         Height="35"
+                         Background="#1A1A2E"
+                         Foreground="White"
+                         BorderBrush="#C084FC"
+                         FontSize="18"/>
 
-            <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-                <Button Content="Ordenar" Click="Ordenar_Click" Margin="5"/>
-                <Button Content="Buscar" Click="Buscar_Click" Margin="5"/>
+                <Button Content="Generar"
+                        Style="{StaticResource MenuButton}"
+                        Click="Generar_Click"/>
             </StackPanel>
 
-            <TextBlock x:Name="txtResultado"
-                   Foreground="White"
-                   Margin="10"/>
+            <TextBlock Text="Agregar número"
+                       Foreground="#C084FC"
+                       Margin="0,15,0,5"/>
+
+            <StackPanel Orientation="Horizontal">
+                <TextBox x:Name="txtNumero"
+                         Width="100"
+                         Height="35"
+                         Background="#1A1A2E"
+                         Foreground="White"
+                         BorderBrush="#C084FC"
+                         FontSize="18"/>
+
+                <Button Content="Agregar"
+                        Style="{StaticResource MenuButton}"
+                        Click="Agregar_Click"/>
+            </StackPanel>
+
+            <!-- LISTAS -->
+            <Grid Margin="0,20,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <!-- ORIGINAL -->
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="Vector Original"
+                               Foreground="White"
+                               Margin="5"/>
+                    <ListBox x:Name="listaOriginal"
+                             Height="200"
+                             Background="#1A1A2E"
+                             Foreground="White"
+                             BorderBrush="#C084FC"/>
+                </StackPanel>
+
+                <!-- ORDENADO -->
+                <StackPanel Grid.Column="1">
+                    <TextBlock Text="Vector Ordenado"
+                               Foreground="White"
+                               Margin="5"/>
+                    <ListBox x:Name="listaOrdenado"
+                             Height="200"
+                             Background="#1A1A2E"
+                             Foreground="White"
+                             BorderBrush="#C084FC"/>
+                </StackPanel>
+
+            </Grid>
+
+            <!-- BOTONES LIMPIEZA -->
+            <Button Content="Limpiar Vector Ordenado"
+                    Style="{StaticResource MenuButton}"
+                    Click="LimpiarOrdenado_Click"
+                    Margin="0,10,0,0"/>
+
+            <Button Content="Limpiar Todo"
+                    Style="{StaticResource MenuButton}"
+                    Click="LimpiarTodo_Click"/>
 
         </StackPanel>
+
+        <!-- 🔹 PANEL DERECHO -->
+        <StackPanel Grid.Column="1" Margin="10">
+
+            <!-- ORDENAMIENTO -->
+            <TextBlock Text="Algoritmos de Ordenamiento"
+                       Foreground="#C084FC"
+                       FontSize="18"
+                       Margin="0,0,0,10"/>
+
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                <RadioButton Content="Ascendente" Foreground="White" Margin="10,0"/>
+                <RadioButton Content="Descendente" Foreground="White" Margin="10,0"/>
+            </StackPanel>
+
+            <WrapPanel>
+
+                <Button Content="Selección" Style="{StaticResource MenuButton}" />
+                <Button Content="Inserción" Style="{StaticResource MenuButton}" />
+                <Button Content="Bubble Sort" Style="{StaticResource MenuButton}" />
+                <Button Content="Quick Sort" Style="{StaticResource MenuButton}" />
+                <Button Content="Merge Sort" Style="{StaticResource MenuButton}" />
+                <Button Content="Radix Sort" Style="{StaticResource MenuButton}" />
+                <Button Content="Bucket Sort" Style="{StaticResource MenuButton}" />
+                <Button Content="Shell Sort" Style="{StaticResource MenuButton}" />
+                <Button Content="Heap Sort" Style="{StaticResource MenuButton}" />
+
+            </WrapPanel>
+
+            <!-- RESULTADO ORDENAMIENTO -->
+            <TextBlock Text="Lista ordenada por:"
+                       Foreground="White"
+                       Margin="0,15,0,5"/>
+
+            <TextBox x:Name="txtMetodoOrden"
+                     IsReadOnly="True"
+                     Background="#1A1A2E"
+                     Foreground="#C084FC"
+                     BorderBrush="#C084FC"
+                     Height="35"
+                     FontSize="18"/>
+
+            <!-- BUSQUEDA -->
+            <TextBlock Text="Algoritmos de Búsqueda"
+                       Foreground="#C084FC"
+                       FontSize="18"
+                       Margin="20,20,0,10"/>
+
+            <TextBox x:Name="txtBuscar"
+                     Height="35"
+                     Margin="0,0,0,10"
+                     Background="#1A1A2E"
+                     Foreground="White"
+                     BorderBrush="#C084FC"
+                     FontSize="18"/>
+
+            <StackPanel Orientation="Horizontal">
+
+                <Button Content="Búsqueda Secuencial"
+                        Style="{StaticResource MenuButton}"
+                        Click="Lineal_Click"/>
+
+                <Button Content="Búsqueda Binaria"
+                        Style="{StaticResource MenuButton}"
+                        Click="Binaria_Click"/>
+
+            </StackPanel>
+
+            <!-- RESULTADO BUSQUEDA -->
+            <TextBlock Text="Elemento buscado por:"
+                       Foreground="White"
+                       Margin="15,15,0,5"/>
+
+            <TextBox x:Name="txtMetodoBusqueda"
+                     IsReadOnly="True"
+                     Background="#1A1A2E"
+                     Foreground="#C084FC"
+                     BorderBrush="#C084FC"
+                      Height="35"
+                     FontSize="18"/>
+
+            <TextBlock x:Name="txtResultado"
+                       Foreground="White"
+                       Margin="10"/>
+
+        </StackPanel>
+
     </Grid>
 </UserControl>

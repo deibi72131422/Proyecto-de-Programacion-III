@@ -1,3 +1,4 @@
 <Solution>
-  <Project Path="proyectodeloschikis/proyectodeloschikis.csproj" />
+  <Folder Name="/Elementos de la solución/" />
+  <Project Path="proyectodeloschikis/proyectodeloschikis.csproj" Id="f9fe21bb-d934-4346-b629-16808972859c" />
 </Solution>
