@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
           >
     <Grid Margin="20">
-
+        <!-- 🔹 PANEL IZQUIERDO -->
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="3*"/>
