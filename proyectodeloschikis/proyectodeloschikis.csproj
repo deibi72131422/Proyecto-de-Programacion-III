@@ -55,16 +55,47 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CalculadoraView.xaml.cs">
+      <DependentUpon>CalculadoraView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ColaView.xaml.cs">
+      <DependentUpon>ColaView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ListaBobleView.xaml.cs">
+      <DependentUpon>ListaBobleView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ListaEnlazadaView.xaml.cs">
+      <DependentUpon>ListaEnlazadaView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="OrdenamientoView.xaml.cs">
       <DependentUpon>OrdenamientoView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Page1.xaml.cs">
       <DependentUpon>Page1.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PilaView.xaml.cs">
+      <DependentUpon>PilaView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControl1.xaml.cs">
       <DependentUpon>UserControl1.xaml</DependentUpon>
     </Compile>
     <Compile Include="validacion.cs" />
+    <Page Include="CalculadoraView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ColaView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ListaBobleView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ListaEnlazadaView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -82,6 +113,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Page1.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PilaView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

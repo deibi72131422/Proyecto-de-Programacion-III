@@ -1,8 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <!-- 💜 BOTÓN FUTURISTA -->
-    <Style x:Key="MenuButton" TargetType="Button">
+    <Style x:Key="BaseMenuStyle" TargetType="Control">
         <Setter Property="Margin" Value="5"/>
         <Setter Property="Height" Value="45"/>
         <Setter Property="Foreground" Value="White"/>
@@ -11,18 +10,21 @@
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="Cursor" Value="Hand"/>
+    </Style>
+    <Style x:Key="MenuButton" TargetType="Button"
+   BasedOn="{StaticResource BaseMenuStyle}">
 
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
                     <Border x:Name="border"
-                            Background="{TemplateBinding Background}"
-                            CornerRadius="10"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}">
+                    Background="{TemplateBinding Background}"
+                    CornerRadius="10"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}">
 
                         <ContentPresenter HorizontalAlignment="Center"
-                                          VerticalAlignment="Center"/>
+                                  VerticalAlignment="Center"/>
                     </Border>
 
                     <ControlTemplate.Triggers>
@@ -37,10 +39,43 @@
                         </Trigger>
 
                     </ControlTemplate.Triggers>
-
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+
+    </Style>
+    <Style x:Key="MenuToggleButton" TargetType="ToggleButton"
+   BasedOn="{StaticResource BaseMenuStyle}">
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ToggleButton">
+                    <Border x:Name="border"
+                    Background="{TemplateBinding Background}"
+                    CornerRadius="10"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}">
+
+                        <ContentPresenter HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"/>
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="#C084FC"/>
+                            <Setter Property="Foreground" Value="Black"/>
+                        </Trigger>
+
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="#A855F7"/>
+                        </Trigger>
+
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
     </Style>
 
 </ResourceDictionary>

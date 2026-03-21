@@ -28,6 +28,47 @@ namespace proyectodeloschikis
         {
             MainContent.Content = new OrdenamientoView();
         }
+
+        private void Listas_Click(object sender, RoutedEventArgs e)
+        {
+            MainContent.Content = new ListaEnlazadaView();
+        }
+        private void LidstasDoblementeEnlazadas_Click(object sender, RoutedEventArgs e)
+        {
+            MainContent.Content = new ListaBobleView();
+        }
+        private void Colas_Click(object sender, RoutedEventArgs e)
+        {
+            MainContent.Content = new ColaView();
+        }
+        private void Pilas_Click(object sender, RoutedEventArgs e)
+        {
+            MainContent.Content = new PilaView();
+        }
+
+        private void Calculadora_Click(object sender, RoutedEventArgs e)
+        {
+            MainContent.Content = new CalculadoraView();
+        }
+        private void BtnLineales_Checked(object sender, RoutedEventArgs e)
+        {
+            panelLineales.Visibility = Visibility.Visible;
+        }
+
+        private void BtnLineales_Unchecked(object sender, RoutedEventArgs e)
+        {
+            panelLineales.Visibility = Visibility.Collapsed;
+        }
+
+        private void BtnNoLineales_Checked(object sender, RoutedEventArgs e)
+        {
+            panelNoLineales.Visibility = Visibility.Visible;
+        }
+
+        private void BtnNoLineales_Unchecked(object sender, RoutedEventArgs e)
+        {
+            panelNoLineales.Visibility = Visibility.Collapsed;
+        }
     }
 
 

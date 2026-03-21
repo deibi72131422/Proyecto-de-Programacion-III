@@ -7,9 +7,7 @@
              mc:Ignorable="d" 
           >
     <Grid Margin="20">
-        <!-- 🔹 PANEL IZQUIERDO -->
-        <!-- 🔹 PANEL IZQUIERDO -->
-   
+
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="3*"/>
@@ -22,8 +20,11 @@
                        Foreground="#C084FC"
                        FontSize="18"
                        Margin="0,0,0,10"/>
-
+            <TextBlock Text="Generar aleatoriamente"
+                       Foreground="#C084FC"
+                       Margin="0,15,0,5"/>
             <StackPanel Orientation="Horizontal">
+
                 <TextBox x:Name="txtCantidad"
                          Width="100"
                          Height="35"
@@ -34,10 +35,10 @@
 
                 <Button Content="Generar"
                         Style="{StaticResource MenuButton}"
-                        Click="Generar_Click"/>
+                        />
             </StackPanel>
 
-            <TextBlock Text="Agregar número"
+            <TextBlock Text="Agregar número o letra"
                        Foreground="#C084FC"
                        Margin="0,15,0,5"/>
 
@@ -52,7 +53,7 @@
 
                 <Button Content="Agregar"
                         Style="{StaticResource MenuButton}"
-                        Click="Agregar_Click"/>
+                        />
             </StackPanel>
 
             <!-- LISTAS -->
@@ -91,12 +92,12 @@
             <!-- BOTONES LIMPIEZA -->
             <Button Content="Limpiar Vector Ordenado"
                     Style="{StaticResource MenuButton}"
-                    Click="LimpiarOrdenado_Click"
+                    
                     Margin="0,10,0,0"/>
 
             <Button Content="Limpiar Todo"
                     Style="{StaticResource MenuButton}"
-                    Click="LimpiarTodo_Click"/>
+                    />
 
         </StackPanel>
 
@@ -159,11 +160,11 @@
 
                 <Button Content="Búsqueda Secuencial"
                         Style="{StaticResource MenuButton}"
-                        Click="Lineal_Click"/>
+                        />
 
                 <Button Content="Búsqueda Binaria"
                         Style="{StaticResource MenuButton}"
-                        Click="Binaria_Click"/>
+                        />
 
             </StackPanel>
 

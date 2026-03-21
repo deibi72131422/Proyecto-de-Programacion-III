@@ -16,16 +16,13 @@ using System.Windows.Shapes;
 namespace proyectodeloschikis
 {
     /// <summary>
-    /// Lógica de interacción para OrdenamientoView.xaml
+    /// Lógica de interacción para ListaBobleView.xaml
     /// </summary>
-    public partial class OrdenamientoView : UserControl
+    public partial class ListaBobleView : UserControl
     {
-        List<int> datos = new List<int>();
-
-        public OrdenamientoView()
+        public ListaBobleView()
         {
             InitializeComponent();
         }
-
     }
 }

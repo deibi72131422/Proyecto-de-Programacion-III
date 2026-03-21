@@ -12,32 +12,62 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <!-- SIDEBAR oliwis -->
+
         <Border Background="#1A1A2E" Grid.Column="0">
-            <StackPanel Margin="10">
+            <ScrollViewer VerticalScrollBarVisibility="Auto"
+                  HorizontalScrollBarVisibility="Disabled"
+                  Background="Transparent">
 
-                <!-- TÍTULO -->
-                <TextBlock Text="DATA LAB"
-                           Foreground="#C084FC"
-                           FontSize="24"
-                           FontWeight="Bold"
-                           Margin="10"
-                           HorizontalAlignment="Center"/>
+                <StackPanel Margin="10">
 
-                <Separator Margin="5" Background="#C084FC"/>
 
-                <!-- BOTONES -->
-                <Button Style="{StaticResource  MenuButton}" Content="Ordenamiento y Búsqueda" Click="Ordenamiento_Click"/>
-                <Button Style="{StaticResource MenuButton}" Content="Estructuras Lineales"/>
-                <Button Style="{StaticResource MenuButton}" Content="Calculadora (Pilas)"/>
-                <Button Style="{StaticResource MenuButton}" Content="Árboles"/>
-                <Button Style="{StaticResource MenuButton}" Content="Grafos"/>
-                <Button Style="{StaticResource MenuButton}" Content="Recursividad"/>
+                    <TextBlock Text="DATA LAB"
+                       Foreground="#C084FC"
+                       FontSize="24"
+                       FontWeight="Bold"
+                       Margin="10"
+                       HorizontalAlignment="Center"/>
 
-            </StackPanel>
+                    <Separator Margin="5" Background="#C084FC"/>
+
+
+                    <Button Style="{StaticResource MenuButton}" Content="Ordenamiento y Búsqueda" Click="Ordenamiento_Click"/>
+
+
+                    <ToggleButton x:Name="btnLineales" 
+                          Style="{StaticResource MenuToggleButton}" 
+                          Content="Estructuras Lineales"
+                          Checked="BtnLineales_Checked"
+                          Unchecked="BtnLineales_Unchecked"/>
+
+                    <StackPanel x:Name="panelLineales" Visibility="Collapsed" Margin="10,0,0,0">
+                        <Button Style="{StaticResource MenuButton}" Content="Listas" Click="Listas_Click" />
+                        <Button Style="{StaticResource MenuButton}" Content="Listas Doble" Click="LidstasDoblementeEnlazadas_Click"/>
+                        <Button Style="{StaticResource MenuButton}" Content="Colas" Click="Colas_Click"/>
+                        <Button Style="{StaticResource MenuButton}" Content="Pilas" Click="Pilas_Click"/>
+                    </StackPanel>
+
+
+                    <ToggleButton x:Name="btnNoLineales" 
+                          Style="{StaticResource MenuToggleButton}" 
+                          Content="Estructuras No Lineales"
+                          Checked="BtnNoLineales_Checked"
+                          Unchecked="BtnNoLineales_Unchecked"/>
+
+                    <StackPanel x:Name="panelNoLineales" Visibility="Collapsed" Margin="10,0,0,0">
+                        <Button Style="{StaticResource MenuButton}" Content="Árboles" />
+                        <Button Style="{StaticResource MenuButton}" Content="Grafos" />
+                    </StackPanel>
+
+
+                    <Button Style="{StaticResource MenuButton}" Content="Calculadora (Pilas)" Click="Calculadora_Click"/>
+                    <Button Style="{StaticResource MenuButton}" Content="Recursividad" />
+
+                </StackPanel>
+            </ScrollViewer>
         </Border>
 
-        <!-- CONTENIDO -->
+
         <Grid Grid.Column="1">
             <Border Background="#121225" CornerRadius="10" Margin="10" >
                 <ContentControl x:Name="MainContent"/>
