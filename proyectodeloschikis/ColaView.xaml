@@ -38,7 +38,8 @@
                              x:Name="txtInsertar"/>
                     <Button Content="Insertar"
                             Style="{StaticResource MenuButton}"
-                            HorizontalAlignment="Left"/>
+                            HorizontalAlignment="Left"
+                            Click="btnInsertar_Click"/>
                 </DockPanel>
 
                 <!-- Botones Quitar y Limpiar (abajo del insertar) -->
@@ -47,10 +48,12 @@
                             Style="{StaticResource MenuButton}"
                             Width="140"
                             Margin="0,0,12,0"
+                            Click="btnQuitar_Click"
                             />
                     <Button Content="Limpiar"
                             Style="{StaticResource MenuButton}"
                             Width="140"
+                            Click="btnLimpiar_Click"
                             />
                 </StackPanel>
 
@@ -60,6 +63,7 @@
                             Content="¿Está vacía?"
                             Style="{StaticResource MenuButton}"
                             Margin="0,0,10,0"
+                            Click="btnVacia_Click"
                             />
                     <TextBox Background="#1A1A2E"
                              Foreground="White"
@@ -75,6 +79,7 @@
                             Content="¿Está llena?"
                             Style="{StaticResource MenuButton}"
                             Margin="0,0,10,0"
+                            Click="btnLlena_Click"
                             />
                     <TextBox Background="#1A1A2E"
                              Foreground="White"
@@ -90,6 +95,7 @@
                             Content="Tamaño Máximo"
                             Style="{StaticResource MenuButton}"
                             Margin="0,0,10,0"
+                            Click="btnTamano_Click"
                             />
                     <TextBox Background="#1A1A2E"
                              Foreground="White"
@@ -105,6 +111,7 @@
                             Content="Cima"
                             Style="{StaticResource MenuButton}"
                             Margin="0,0,10,0"
+                            Click="btnCima_Click"
                             />
                     <TextBox Background="#1A1A2E"
                              Foreground="White"
