@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-// chavales esto era para ver si funcionaba y ns como mierda funciona aaaaaaaaaaa, te extraño  karla volve 
+// chavales esto era para ver si funcionaba y ns como mierda funciona aaaaaaaaaaa, te extraño  karla volve --ENSERIO PIENSA Q VA A VOLVER
 namespace proyectodeloschikis
 {
     /// <summary>
