@@ -16,115 +16,124 @@
 
         <!-- PANEL BOTONES (izquierda) -->
         <ScrollViewer Grid.Column="0"
-                      VerticalScrollBarVisibility="Auto"
-                      HorizontalScrollBarVisibility="Disabled"
-                      Margin="0,0,20,0">
+                  VerticalScrollBarVisibility="Auto"
+                  HorizontalScrollBarVisibility="Disabled"
+                  Margin="0,0,20,0">
             <!-- espacio a la derecha para separar de la lista -->
 
             <StackPanel>
 
                 <TextBlock Text="Listas Enlazadas"
-                           FontSize="20"
-                           Foreground="#C084FC"
-                           Margin="0,0,0,10"/>
+                       FontSize="20"
+                       Foreground="#C084FC"
+                       Margin="0,0,0,10"/>
 
                 <TextBlock Text="Elemento" Foreground="White"/>
                 <TextBox x:Name="txtValor" Height="35"
-                         Background="#1A1A2E"
-                         Foreground="White"
-                         BorderBrush="#C084FC"/>
+                     Background="#1A1A2E"
+                     Foreground="White"
+                     BorderBrush="#C084FC"/>
 
                 <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-                    <Button Content="Agregar al Inicio" Style="{StaticResource MenuButton}" />
-                    <Button Content="Agregar al Final"   Style="{StaticResource MenuButton}" Margin="8,0,0,0"/>
+                    <Button Content="Agregar al Inicio" Style="{StaticResource MenuButton}" Click="AgregarInicio_Click"/>
+                    <Button Content="Agregar al Final"   Style="{StaticResource MenuButton}" Margin="8,0,0,0" Click="AgregarFinal_Click"/>
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
-                    <Button Content="Eliminar al Inicio" Style="{StaticResource MenuButton}" />
-                    <Button Content="Eliminar al Final"  Style="{StaticResource MenuButton}" Margin="8,0,0,0"/>
+                    <Button Content="Eliminar al Inicio" Style="{StaticResource MenuButton}" Click="EliminarInicio_Click"/>
+                    <Button Content="Eliminar al Final"  Style="{StaticResource MenuButton}" Margin="8,0,0,0" Click="EliminarFinal_Click"/>
                 </StackPanel>
 
                 <DockPanel LastChildFill="True" Margin="0,8,0,0">
                     <Button DockPanel.Dock="Left"
-                            Content="Buscar"
-                            Style="{StaticResource MenuButton}"
-                            Margin="0,0,8,0"/>
+                        Content="Buscar"
+                        Style="{StaticResource MenuButton}"
+                        Margin="0,0,8,0"
+                        Click="Buscar_Click"/>
                     <TextBox x:Name="txtbucarelemtolista"
-                             Background="#1A1A2E"
-                             Foreground="White"
-                             BorderBrush="#C084FC"
-                             FontSize="18"/>
+                         Background="#1A1A2E"
+                         Foreground="White"
+                         BorderBrush="#C084FC"
+                         FontSize="18"/>
                 </DockPanel>
 
                 <DockPanel LastChildFill="True" Margin="0,8,0,0">
                     <Button DockPanel.Dock="Left"
-                            Content="¿Está vacía?"
-                            Style="{StaticResource MenuButton}"
-                            Margin="0,0,10,0"/>
+                        Content="¿Está vacía?"
+                        Style="{StaticResource MenuButton}"
+                        Margin="0,0,10,0"
+                        Click="EstaVacia_Click"/>
                     <TextBox Background="#1A1A2E"
-                             Foreground="White"
-                             BorderBrush="#C084FC"
-                             FontSize="16"
-                             IsReadOnly="True"/>
+                         Foreground="White"
+                         BorderBrush="#C084FC"
+                         FontSize="16"
+                         IsReadOnly="True"
+                         x:Name="txtVacia"/>
                 </DockPanel>
 
                 <DockPanel LastChildFill="True" Margin="0,8,0,0">
                     <Button DockPanel.Dock="Left"
-                            Content="Encontrar Media"
-                            Style="{StaticResource MenuButton}"
-                            Margin="0,0,10,0"/>
+                        Content="Encontrar Media"
+                        Style="{StaticResource MenuButton}"
+                        Margin="0,0,10,0"
+                        Click="Media_Click"/>
                     <TextBox Background="#1A1A2E"
-                             Foreground="White"
-                             BorderBrush="#C084FC"
-                             FontSize="16"
-                             IsReadOnly="True"/>
+                         Foreground="White"
+                         BorderBrush="#C084FC"
+                         FontSize="16"
+                         IsReadOnly="True"
+                         x:Name="txtMedia"/>
                 </DockPanel>
 
                 <DockPanel LastChildFill="True" Margin="0,8,0,0">
                     <Button DockPanel.Dock="Left"
-                            Content="Sumar Elementos"
-                            Style="{StaticResource MenuButton}"
-                            Margin="0,0,10,0"/>
+                        Content="Sumar Elementos"
+                        Style="{StaticResource MenuButton}"
+                        Margin="0,0,10,0"
+                        Click="Suma_Click"/>
                     <TextBox Background="#1A1A2E"
-                             Foreground="White"
-                             BorderBrush="#C084FC"
-                             FontSize="16"
-                             IsReadOnly="True"/>
+                         Foreground="White"
+                         BorderBrush="#C084FC"
+                         FontSize="16"
+                         IsReadOnly="True"
+                         x:Name="txtSuma"/>
                 </DockPanel>
 
                 <DockPanel LastChildFill="True" Margin="0,8,0,0">
                     <Button DockPanel.Dock="Left"
-                            Content="Encontrar Mayor"
-                            Style="{StaticResource MenuButton}"
-                            Margin="0,0,10,0"/>
+                        Content="Encontrar Mayor"
+                        Style="{StaticResource MenuButton}"
+                        Margin="0,0,10,0"
+                        Click="Mayor_Click"/>
                     <TextBox Background="#1A1A2E"
-                             Foreground="White"
-                             BorderBrush="#C084FC"
-                             FontSize="16"
-                             IsReadOnly="True"/>
+                         Foreground="White"
+                         BorderBrush="#C084FC"
+                         FontSize="16"
+                         IsReadOnly="True"
+                         x:Name="txtMayor"/>
                 </DockPanel>
 
-                <Button Content="Ordenar Descendente" Style="{StaticResource MenuButton}" Margin="0,8,0,0"/>
-                <Button Content="Limpiar Lista" Style="{StaticResource MenuButton}" Cursor="Hand" Margin="0,8,0,0"/>
+                <Button Content="Ordenar Descendente" Style="{StaticResource MenuButton}" Margin="0,8,0,0" Click="Ordenar_Click"/>
+                <Button Content="Limpiar Lista" Style="{StaticResource MenuButton}" Cursor="Hand" Margin="0,8,0,0" Click="Limpiar_Click"/>
 
             </StackPanel>
         </ScrollViewer>
 
         <!-- LISTA (derecha) -->
         <ScrollViewer Grid.Column="1"
-                      Margin="10"
-                      VerticalScrollBarVisibility="Auto"
-                      HorizontalScrollBarVisibility="Disabled"
-                      Background="#1A1A2E"
-                      BorderBrush="#C084FC"
-                      BorderThickness="1">
+                  Margin="10"
+                  VerticalScrollBarVisibility="Auto"
+                  HorizontalScrollBarVisibility="Disabled"
+                  Background="#1A1A2E"
+                  BorderBrush="#C084FC"
+                  BorderThickness="1">
 
             <ListBox x:Name="listaDatos"
-                     Background="Transparent"
-                     Foreground="White"
-                     BorderThickness="0"
-                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                     ScrollViewer.VerticalScrollBarVisibility="Disabled"/>
+                 Background="Transparent"
+                 Foreground="White"
+                 BorderThickness="0"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                 ScrollViewer.VerticalScrollBarVisibility="Disabled"/>
         </ScrollViewer>
     </Grid>
 </UserControl>
