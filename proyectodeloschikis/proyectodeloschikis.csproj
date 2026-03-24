@@ -55,17 +55,29 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ArbolView.xaml.cs">
+      <DependentUpon>ArbolView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CalculadoraView.xaml.cs">
       <DependentUpon>CalculadoraView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ColaView.xaml.cs">
       <DependentUpon>ColaView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GrafosView.xaml.cs">
+      <DependentUpon>GrafosView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ListaAdyacenciaWindow.xaml.cs">
+      <DependentUpon>ListaAdyacenciaWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ListaBobleView.xaml.cs">
       <DependentUpon>ListaBobleView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ListaEnlazadaView.xaml.cs">
       <DependentUpon>ListaEnlazadaView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MatrizAdyacenciaWindow.xaml.cs">
+      <DependentUpon>MatrizAdyacenciaWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="OrdenamientoView.xaml.cs">
       <DependentUpon>OrdenamientoView.xaml</DependentUpon>
@@ -76,15 +88,33 @@
     <Compile Include="PilaView.xaml.cs">
       <DependentUpon>PilaView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="RecursivoView.xaml.cs">
+      <DependentUpon>RecursivoView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UcHanoi.xaml.cs">
+      <DependentUpon>UcHanoi.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControl1.xaml.cs">
       <DependentUpon>UserControl1.xaml</DependentUpon>
     </Compile>
     <Compile Include="validacion.cs" />
+    <Page Include="ArbolView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CalculadoraView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ColaView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GrafosView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ListaAdyacenciaWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -108,6 +138,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="MatrizAdyacenciaWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="OrdenamientoView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -120,7 +154,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="RecursivoView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Styles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UcHanoi.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

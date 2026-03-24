@@ -55,13 +55,13 @@
                           Unchecked="BtnNoLineales_Unchecked"/>
 
                     <StackPanel x:Name="panelNoLineales" Visibility="Collapsed" Margin="10,0,0,0">
-                        <Button Style="{StaticResource MenuButton}" Content="Árboles" />
-                        <Button Style="{StaticResource MenuButton}" Content="Grafos" />
+                        <Button Style="{StaticResource MenuButton}" Content="Árboles" Click="Arbol_Click"/>
+                        <Button Style="{StaticResource MenuButton}" Content="Grafos" Click="Grafos_Click"/>
                     </StackPanel>
 
 
                     <Button Style="{StaticResource MenuButton}" Content="Calculadora (Pilas)" Click="Calculadora_Click"/>
-                    <Button Style="{StaticResource MenuButton}" Content="Recursividad" />
+                    <Button Style="{StaticResource MenuButton}" Content="Recursividad" Click="Recursivo_Click" />
 
                 </StackPanel>
             </ScrollViewer>

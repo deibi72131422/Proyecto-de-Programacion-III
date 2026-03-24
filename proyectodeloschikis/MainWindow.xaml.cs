@@ -50,6 +50,18 @@ namespace proyectodeloschikis
         {
             MainContent.Content = new CalculadoraView();
         }
+        private void Arbol_Click(object sender, RoutedEventArgs e)
+        {
+            MainContent.Content = new ArbolView();
+        }
+        private void Grafos_Click(object sender, RoutedEventArgs e)
+        {
+            MainContent.Content = new GrafosView();
+        }
+        private void Recursivo_Click(object sender, RoutedEventArgs e)
+        {
+            MainContent.Content = new RecursivoView();
+        }
         private void BtnLineales_Checked(object sender, RoutedEventArgs e)
         {
             panelLineales.Visibility = Visibility.Visible;
