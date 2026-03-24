@@ -15,122 +15,198 @@ using System.Windows.Shapes;
 
 namespace proyectodeloschikis
 {
-    /// <summary>
-    /// Lógica de interacción para ArbolView.xaml
-    /// </summary>
+    public class Nodo
+    {
+        public string Valor { get; set; }
+        public Nodo Izquierdo { get; set; }
+        public Nodo Derecho { get; set; }
+        public Nodo(string v) { Valor = v; }
+    }
+
     public partial class ArbolView : UserControl
     {
+        private Nodo raiz = null;
+
         public ArbolView()
         {
             InitializeComponent();
         }
-        // chavales esto me dio chatsito para probar el arbol, ns si es correcto, ustedebn ven, pero funciona medio raro, estoy usando un canvas para dibujar el arbol, y cada vez que inserto un nodo, borro todo el canvas y lo vuelvo a dibujar, no se si es la mejor forma, pero es la que se me ocurrio, si tienen alguna sugerencia para mejorar esto, soy todo oidos
-        public class Nodo
-        {
-            public int Valor;
-            public Nodo Izq;
-            public Nodo Der;
+        // Comparacion de los datos
 
-            public Nodo(int valor)
+        private int Comparar(string valorNuevo, string valorNodo)
+        {
+            if (rbEnteros.IsChecked == true)
             {
-                Valor = valor;
-                Izq = null;
-                Der = null;
+                int n1 = int.Parse(valorNuevo);
+                int n2 = int.Parse(valorNodo);
+                return n1.CompareTo(n2);
+            }
+            else
+            {
+                return string.Compare(valorNuevo, valorNodo);
             }
         }
-        Nodo raiz = null;
 
-        Nodo Insertar(Nodo nodo, int valor)
-        {
-            if (nodo == null)
-                return new Nodo(valor);
+        // Botones 
+   
 
-            if (valor < nodo.Valor)
-                nodo.Izq = Insertar(nodo.Izq, valor);
-            else
-                nodo.Der = Insertar(nodo.Der, valor);
-
-            return nodo;
-        }
         private void Insertar_Click(object sender, RoutedEventArgs e)
         {
-            int valor = int.Parse(txtValor.Text);
+            if (string.IsNullOrWhiteSpace(txtValor.Text)) return;
 
-            raiz = Insertar(raiz, valor);
+            try
+            {
+                raiz = InsertarRecursivo(raiz, txtValor.Text);
+                txtValor.Clear();
+                txtResultado.Text = "Nodo insertado.";
+                DibujarArbol();
+            }
+            catch
+            {
+                txtResultado.Text = "Error: Tipo de dato incorrecto.";
+            }
+        }
 
+        private void Buscar_Click(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtValor.Text)) return;
+            bool existe = BuscarNodo(raiz, txtValor.Text);
+            txtResultado.Text = existe ? "Encontrado." : "No encontrado.";
+        }
+
+        private void Reiniciar_Click(object sender, RoutedEventArgs e)
+        {
+            raiz = null;
+            txtResultado.Clear();
+            txtValor.Clear();
             DibujarArbol();
         }
-        void DibujarArbol()
-        {
-            canvasArbol.Children.Clear();
 
-            DibujarNodo(raiz, 400, 20, 150);
+        // Parte de los Recorridos
+
+        private void InOrden_Click(object sender, RoutedEventArgs e)
+        {
+            List<string> lista = new List<string>();
+            RecorridoInOrden(raiz, lista);
+            txtResultado.Text = "In-Orden: " + string.Join(" - ", lista);
         }
-        void DibujarNodo(Nodo nodo, double x, double y, double offset)
+
+        private void RecorridoInOrden(Nodo nodo, List<string> lista)
         {
             if (nodo == null) return;
-
-            // 🔵 CÍRCULO
-            Ellipse circulo = new Ellipse
-            {
-                Width = 35,
-                Height = 35,
-                Fill = Brushes.MediumPurple
-            };
-
-            Canvas.SetLeft(circulo, x);
-            Canvas.SetTop(circulo, y);
-
-            canvasArbol.Children.Add(circulo);
-
-            // 🔤 TEXTO
-            TextBlock texto = new TextBlock
-            {
-                Text = nodo.Valor.ToString(),
-                Foreground = Brushes.White,
-                FontWeight = FontWeights.Bold
-            };
-
-            Canvas.SetLeft(texto, x + 10);
-            Canvas.SetTop(texto, y + 5);
-
-            canvasArbol.Children.Add(texto);
-
-            // 🔻 IZQUIERDA
-            if (nodo.Izq != null)
-            {
-                Line linea = new Line
-                {
-                    X1 = x + 15,
-                    Y1 = y + 35,
-                    X2 = x - offset + 15,
-                    Y2 = y + 80,
-                    Stroke = Brushes.White,
-                    StrokeThickness = 2
-                };
-
-                canvasArbol.Children.Add(linea);
-
-                DibujarNodo(nodo.Izq, x - offset, y + 80, offset / 2);
-            }
-
-            // 🔺 DERECHA
-            if (nodo.Der != null)
-            {
-                Line linea = new Line
-                {
-                    X1 = x + 15,
-                    Y1 = y + 35,
-                    X2 = x + offset + 15,
-                    Y2 = y + 80,
-                    Stroke = Brushes.White,
-                    StrokeThickness = 2
-                };
-
-                canvasArbol.Children.Add(linea);
-
-                DibujarNodo(nodo.Der, x + offset, y + 80, offset / 2);
-            }
+            RecorridoInOrden(nodo.Izquierdo, lista);
+            lista.Add(nodo.Valor);
+            RecorridoInOrden(nodo.Derecho, lista);
         }
+
+        private void PreOrden_Click(object sender, RoutedEventArgs e)
+        {
+            List<string> lista = new List<string>();
+            RecorridoPreOrden(raiz, lista);
+            txtResultado.Text = "Pre-Orden: " + string.Join(" - ", lista);
+        }
+
+        private void RecorridoPreOrden(Nodo nodo, List<string> lista)
+        {
+            if (nodo == null) return;
+            lista.Add(nodo.Valor);
+            RecorridoPreOrden(nodo.Izquierdo, lista);
+            RecorridoPreOrden(nodo.Derecho, lista);
+        }
+
+        private void PostOrden_Click(object sender, RoutedEventArgs e)
+        {
+            List<string> lista = new List<string>();
+            RecorridoPostOrden(raiz, lista);
+            txtResultado.Text = "Post-Orden: " + string.Join(" - ", lista);
+        }
+
+        private void RecorridoPostOrden(Nodo nodo, List<string> lista)
+        {
+            if (nodo == null) return;
+            RecorridoPostOrden(nodo.Izquierdo, lista);
+            RecorridoPostOrden(nodo.Derecho, lista);
+            lista.Add(nodo.Valor);
+        }
+        // Logica recursiva del Arbol
+
+        private Nodo InsertarRecursivo(Nodo actual, string valor)
+        {
+            if (actual == null) return new Nodo(valor);
+
+            int comparacion = Comparar(valor, actual.Valor);
+
+            if (comparacion < 0)
+            {
+                actual.Izquierdo = InsertarRecursivo(actual.Izquierdo, valor);
+            }
+            else if (comparacion > 0)
+            {
+                actual.Derecho = InsertarRecursivo(actual.Derecho, valor);
+            }
+
+            return actual;
+        }
+
+        private bool BuscarNodo(Nodo n, string v)
+        {
+            if (n == null) return false;
+            if (n.Valor == v) return true;
+
+            int comparacion = Comparar(v, n.Valor);
+
+            if (comparacion < 0)
+                return BuscarNodo(n.Izquierdo, v);
+            else
+                return BuscarNodo(n.Derecho, v);
+        }
+
+        // Parte con CANVA
+        private void DibujarArbol()
+        {
+            canvasArbol.Children.Clear();
+            if (raiz != null)
+                DibujarNodoRecursivo(raiz, 1000, 50, 250);
+        }
+
+        private void DibujarNodoRecursivo(Nodo n, double x, double y, double off)
+        {
+            if (n == null) return;
+
+            // Líneas
+            if (n.Izquierdo != null)
+            {
+                Line l = new Line { X1 = x, Y1 = y, X2 = x - off, Y2 = y + 70, Stroke = Brushes.White, StrokeThickness = 2 };
+                canvasArbol.Children.Add(l);
+                DibujarNodoRecursivo(n.Izquierdo, x - off, y + 70, off / 2);
+            }
+            if (n.Derecho != null)
+            {
+                Line l = new Line { X1 = x, Y1 = y, X2 = x + off, Y2 = y + 70, Stroke = Brushes.White, StrokeThickness = 2 };
+                canvasArbol.Children.Add(l);
+                DibujarNodoRecursivo(n.Derecho, x + off, y + 70, off / 2);
+            }
+
+            // Círculo
+            Ellipse circle = new Ellipse { Width = 34, Height = 34, Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#C084FC")), Stroke = Brushes.White };
+            Canvas.SetLeft(circle, x - 17);
+            Canvas.SetTop(circle, y - 17);
+            canvasArbol.Children.Add(circle);
+
+            // Valor
+            TextBlock txt = new TextBlock { Text = n.Valor, Foreground = Brushes.Black, FontWeight = FontWeights.Bold };
+            Canvas.SetLeft(txt, x - 7);
+            Canvas.SetTop(txt, y - 9);
+            canvasArbol.Children.Add(txt);
+        }
+
+        // Acciones de los Botones restantes
+        private void Altura_Click(object sender, RoutedEventArgs e) => txtResultado.Text = "Altura: " + GetAltura(raiz);
+        private int GetAltura(Nodo n) => n == null ? 0 : 1 + Math.Max(GetAltura(n.Izquierdo), GetAltura(n.Derecho));
+
+        private void Eliminar_Click(object sender, RoutedEventArgs e) { }
+        private void Nivel_Click(object sender, RoutedEventArgs e) { }
+        private void Minimo_Click(object sender, RoutedEventArgs e) { }
+        private void Maximo_Click(object sender, RoutedEventArgs e) { }
     }
 }
