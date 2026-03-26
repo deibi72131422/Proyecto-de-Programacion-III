@@ -3,57 +3,81 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:proyectodeloschikis"
-             mc:Ignorable="d" d:DesignHeight="600" d:DesignWidth="900">
-    <Grid Margin="10">
+             mc:Ignorable="d" d:DesignHeight="700" d:DesignWidth="1000">
+    <Grid Background="#0F0F1E">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Vertical" VerticalAlignment="Top">
-            <Grid Margin="0,0,0,10">
+        <StackPanel Grid.Row="0" Margin="10">
+            <Border Background="#1A1A2E" BorderBrush="#C084FC" BorderThickness="2" CornerRadius="10" HorizontalAlignment="Center" Padding="30,5" Margin="0,0,0,15">
+                <TextBlock Text="PANEL DE CONTROL DE GRAFOS" FontSize="20" Foreground="#C084FC" FontWeight="Bold"/>
+            </Border>
+
+            <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="Grafos" FontSize="28" Foreground="#C084FC" FontWeight="Bold" HorizontalAlignment="Center"/>
-                <StackPanel Grid.Column="1">
-                    <TextBlock Foreground="White">Vértices: <Run x:Name="txtVertices" Text="0"/></TextBlock>
-                    <TextBlock Foreground="White">Aristas: <Run x:Name="txtAristas" Text="0"/></TextBlock>
+
+                <StackPanel Grid.Column="0" Margin="5">
+                    <Border Background="#1A1A2E" BorderBrush="#C084FC" BorderThickness="1" CornerRadius="5" HorizontalAlignment="Center" Padding="10,2" Margin="0,0,0,8">
+                        <TextBlock Text="Algoritmos" FontWeight="Bold" Foreground="#C084FC" FontSize="11"/>
+                    </Border>
+                    <UniformGrid Columns="2">
+                        <Button Content="DFS" Style="{StaticResource MenuButton}" Height="30" Margin="1" Click="DFS_Click"/>
+                        <Button Content="BFS" Style="{StaticResource MenuButton}" Height="30" Margin="1" Click="BFS_Click"/>
+                        <Button Content="Dijkstra" Style="{StaticResource MenuButton}" Height="30" Margin="1" Click="Dijkstra_Click"/>
+                        <Button Content="Lazo" Style="{StaticResource MenuButton}" Height="30" Margin="1" Click="AgregarLazo_Click"/>
+                    </UniformGrid>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" Margin="5">
+                    <Border Background="#1A1A2E" BorderBrush="#C084FC" BorderThickness="1" CornerRadius="5" HorizontalAlignment="Center" Padding="10,2" Margin="0,0,0,8">
+                        <TextBlock Text="Tipos de Grafos" FontWeight="Bold" Foreground="#C084FC" FontSize="11"/>
+                    </Border>
+                    <Button Content="Matriz Adyacencia" Style="{StaticResource MenuButton}" Height="28" Margin="0,1" Click="MatrizAdyacencia_Click"/>
+                    <Button Content="Lista Adyacencia" Style="{StaticResource MenuButton}" Height="28" Margin="0,1" Click="ListaAdyacencia_Click"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="2" Margin="5">
+                    <Border Background="#1A1A2E" BorderBrush="#C084FC" BorderThickness="1" CornerRadius="5" HorizontalAlignment="Center" Padding="10,2" Margin="0,0,0,8">
+                        <TextBlock Text="Acciones" FontWeight="Bold" Foreground="#C084FC" FontSize="11"/>
+                    </Border>
+                    <UniformGrid Columns="2" Rows="3">
+                        <Button Content="Agregar Nodo" Style="{StaticResource MenuButton}" Height="28" Margin="1" Click="NuevoVertice_Click" Background="#2E7D32"/>
+                        <Button Content="Nueva Arista" Style="{StaticResource MenuButton}" Height="28" Margin="1" Click="NuevaArista_Click"/>
+                        <Button Content="Eliminar Nodo" Style="{StaticResource MenuButton}" Height="28" Margin="1" Click="EliminarNodo_Click" Background="#B71C1C"/>
+                        <Button Content="Vaciar Grafo" Style="{StaticResource MenuButton}" Height="28" Margin="1" Click="VaciarGrafo_Click" Background="#C62828"/>
+                    </UniformGrid>
+
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,3">
+                        <TextBlock Foreground="White" FontSize="12" Margin="5,0">V: <Run x:Name="D_txtV" Text="0" Foreground="#C084FC" FontWeight="Bold"/></TextBlock>
+                        <TextBlock Foreground="White" FontSize="12" Margin="5,0">A: <Run x:Name="D_txtA" Text="0" Foreground="#C084FC" FontWeight="Bold"/></TextBlock>
+                    </StackPanel>
                 </StackPanel>
             </Grid>
             
-            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                <StackPanel Margin="10,0">
-                    <TextBlock Text="Nodo origen" Foreground="White"/>
-                    <TextBox x:Name="txtOrigen" Background="#1A1A2E" Foreground="White" BorderBrush="#C084FC" Height="30" Width="80"/>
-                </StackPanel>
-                <StackPanel Margin="10,0">
-                    <TextBlock Text="Nodo destino" Foreground="White"/>
-                    <TextBox x:Name="txtDestino" Background="#1A1A2E" Foreground="White" BorderBrush="#C084FC" Height="30" Width="80"/>
-                </StackPanel>
-            </StackPanel>
 
-            <WrapPanel>
-                <Button Content="DFS" Style="{StaticResource MenuButton}" Click="DFS_Click"/>
-                <Button Content="BFS" Style="{StaticResource MenuButton}" Click="BFS_Click"/>
-                <Button Content="Dijkstra" Style="{StaticResource MenuButton}" Click="Dijkstra_Click"/>
-                <Button Content="Matriz" Style="{StaticResource MenuButton}" Click="MatrizAdyacencia_Click"/>
-                <Button Content="Nueva Arista" Style="{StaticResource MenuButton}" Click="NuevoVertice_Click"/>
-                <Button Content="Lista" Style="{StaticResource MenuButton}" Click="ListaAdyacencia_Click"/>
-                <Button Content="Lazo" Style="{StaticResource MenuButton}" Click="AgregarLazo_Click"/>
-                <Button Content="Vaciar Grafo" Style="{StaticResource MenuButton}" Click="VaciarGrafo_Click"/>
-            </WrapPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0">
+                <Border BorderBrush="#C084FC" BorderThickness="0,0,1,0" Margin="0,0,15,0" Padding="0,0,15,0">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="NUEVO NODO:" Foreground="#C084FC" FontWeight="Bold" VerticalAlignment="Center" Margin="5,0" FontSize="11"/>
+                        <TextBox x:Name="D_txtNuevoNodo" Background="#1A1A2E" Foreground="White" BorderBrush="#C084FC" Width="60" Height="22" TextAlignment="Center" VerticalContentAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+                <TextBlock Text="ORIGEN:" Foreground="White" VerticalAlignment="Center" Margin="5,0" FontSize="11"/>
+                <TextBox x:Name="D_txtO" Background="#1A1A2E" Foreground="White" BorderBrush="#C084FC" Width="50" Height="22" TextAlignment="Center" VerticalContentAlignment="Center"/>
+                <TextBlock Text="DESTINO:" Foreground="White" VerticalAlignment="Center" Margin="15,0,5,0" FontSize="11"/>
+                <TextBox x:Name="D_txtD" Background="#1A1A2E" Foreground="White" BorderBrush="#C084FC" Width="50" Height="22" TextAlignment="Center" VerticalContentAlignment="Center"/>
+            </StackPanel>
         </StackPanel>
 
-        <Border Grid.Row="1" Background="#1A1A2E" BorderBrush="#C084FC" BorderThickness="1" CornerRadius="10">
+        <Border Grid.Row="1" Background="#1A1A2E" BorderBrush="#C084FC" BorderThickness="1.5" CornerRadius="15" Margin="10">
             <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                <Canvas x:Name="canvasGrafo" 
-                        Width="1400" 
-                        Height="800" 
-                        Background="#1A1A2E" 
-        MouseLeftButtonDown="CanvasGrafo_MouseLeftButtonDown"/>
+                <Canvas x:Name="canvasGrafo" Width="1000" Height="600" Background="#131326" MouseLeftButtonDown="CanvasGrafo_MouseLeftButtonDown"/>
             </ScrollViewer>
         </Border>
     </Grid>
