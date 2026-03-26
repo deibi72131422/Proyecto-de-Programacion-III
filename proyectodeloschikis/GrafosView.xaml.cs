@@ -287,7 +287,6 @@ namespace proyectodeloschikis
 
             canvasGrafo.Children.Add(new Polygon { Fill = Brushes.White, Points = new PointCollection { pI, p1, p2 } });
         }
-
         private void D_DibujarLazo(Vertice vD)
         {
             // Crea una curva Bezier para representar un lazo (arista al mismo nodo)

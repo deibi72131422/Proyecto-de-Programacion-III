@@ -23,7 +23,7 @@
                     <TextBlock Foreground="White">Aristas: <Run x:Name="txtAristas" Text="0"/></TextBlock>
                 </StackPanel>
             </Grid>
-
+            
             <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
                 <StackPanel Margin="10,0">
                     <TextBlock Text="Nodo origen" Foreground="White"/>
