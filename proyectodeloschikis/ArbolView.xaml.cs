@@ -34,7 +34,6 @@ namespace proyectodeloschikis
         {
             InitializeComponent();
         }
-
         // esta funcion sirve para comparar si los datos son numeros o letras
         private int Comparar(string v1, string v2)
         {
@@ -48,7 +47,6 @@ namespace proyectodeloschikis
             // si no son numeros los compara como texto normal
             return string.Compare(v1, v2, StringComparison.Ordinal);
         }
-
         // este es el boton para meter un dato nuevo
         private void Insertar_Click(object sender, RoutedEventArgs e)
         {
@@ -57,7 +55,6 @@ namespace proyectodeloschikis
             txtValor.Clear();
             DibujarArbol(); // despues de insertar volvemos a dibujar
         }
-
         // funcion que busca el lugar vacio para poner el nuevo nodo
         private Nodo InsertarRec(Nodo n, string v)
         {
@@ -67,7 +64,6 @@ namespace proyectodeloschikis
             else if (c > 0) n.Derecho = InsertarRec(n.Derecho, v);
             return n;
         }
-
         // boton para borrar un numero o letra
         private void Eliminar_Click(object sender, RoutedEventArgs e)
         {

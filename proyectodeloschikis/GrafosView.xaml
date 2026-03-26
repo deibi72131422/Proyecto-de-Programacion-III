@@ -4,128 +4,57 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:proyectodeloschikis"
-             mc:Ignorable="d" 
-             >
+             mc:Ignorable="d" d:DesignHeight="600" d:DesignWidth="900">
     <Grid Margin="10">
-
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- 🔥 HEADER -->
-        <StackPanel Orientation="Vertical" VerticalAlignment="Top" >
-
-            <!-- 🔹 TÍTULO + CONTADORES -->
+        <StackPanel Orientation="Vertical" VerticalAlignment="Top">
             <Grid Margin="0,0,0,10">
-
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-
-                <TextBlock Text="Grafos"
-                       FontSize="28"
-                       Foreground="#C084FC"
-                       FontWeight="Bold"
-                       HorizontalAlignment="Center"/>
-
-                <StackPanel Grid.Column="1" VerticalAlignment="Top">
-
-                    <TextBlock Foreground="White">
-                    <Run Text="Cantidad de vértices: "/>
-                    <Run x:Name="txtVertices" Text="0"/>
-                    </TextBlock>
-
-                    <TextBlock Foreground="White">
-                    <Run Text="Cantidad de aristas: "/>
-                    <Run x:Name="txtAristas" Text="0"/>
-                    </TextBlock>
-
+                <TextBlock Text="Grafos" FontSize="28" Foreground="#C084FC" FontWeight="Bold" HorizontalAlignment="Center"/>
+                <StackPanel Grid.Column="1">
+                    <TextBlock Foreground="White">Vértices: <Run x:Name="txtVertices" Text="0"/></TextBlock>
+                    <TextBlock Foreground="White">Aristas: <Run x:Name="txtAristas" Text="0"/></TextBlock>
                 </StackPanel>
-
             </Grid>
 
-            <!-- 🔹 INPUTS -->
             <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-
                 <StackPanel Margin="10,0">
                     <TextBlock Text="Nodo origen" Foreground="White"/>
-                    <TextBox x:Name="txtOrigen"
-                         Background="#1A1A2E"
-                     Foreground="White"
-                     BorderBrush="#C084FC" Height="35" FontSize="30"/>
+                    <TextBox x:Name="txtOrigen" Background="#1A1A2E" Foreground="White" BorderBrush="#C084FC" Height="30" Width="80"/>
                 </StackPanel>
-
                 <StackPanel Margin="10,0">
                     <TextBlock Text="Nodo destino" Foreground="White"/>
-                    <TextBox x:Name="txtDestino"
-                        Background="#1A1A2E"
-                     Foreground="White"
-                     BorderBrush="#C084FC" Height="35" FontSize="30"/>
+                    <TextBox x:Name="txtDestino" Background="#1A1A2E" Foreground="White" BorderBrush="#C084FC" Height="30" Width="80"/>
                 </StackPanel>
-
             </StackPanel>
 
-            <!-- 🔥 MENÚ DE BOTONES (HORIZONTAL) -->
-            <WrapPanel Margin="0,0,0,10">
-
-                <Button Content="DFS"
-                    Style="{StaticResource MenuButton}"
-                    />
-
-                <Button Content="BFS"
-                    Style="{StaticResource MenuButton}"
-                    />
-
-                <Button Content="Dijkstra"
-                    Style="{StaticResource MenuButton}"
-                    />
-
-                <Button Content="Matriz de Adyacencia"
-                    Style="{StaticResource MenuButton}"
-                     Click="MatrizAdyacencia_Click"/>
-
-                <Button Content="Nuevo Vértice"
-                    Style="{StaticResource MenuButton}"
-                    />
-
-                <Button Content="Lista de Adyacencia"
-                    Style="{StaticResource MenuButton}"
-                     Click="ListaAdyacencia_Click"/>
-                <TextBox 
-             Background="#1A1A2E"
-             Foreground="White"
-             BorderBrush="#C084FC" Height="35" Width="80" FontSize="30"/>
-                <Button Content="Agregar Lazo"
-                    Style="{StaticResource MenuButton}"
-                    />
-
-                <Button Content="Salir"
-                    Style="{StaticResource MenuButton}"
-                    />
-
+            <WrapPanel>
+                <Button Content="DFS" Style="{StaticResource MenuButton}" Click="DFS_Click"/>
+                <Button Content="BFS" Style="{StaticResource MenuButton}" Click="BFS_Click"/>
+                <Button Content="Dijkstra" Style="{StaticResource MenuButton}" Click="Dijkstra_Click"/>
+                <Button Content="Matriz" Style="{StaticResource MenuButton}" Click="MatrizAdyacencia_Click"/>
+                <Button Content="Nueva Arista" Style="{StaticResource MenuButton}" Click="NuevoVertice_Click"/>
+                <Button Content="Lista" Style="{StaticResource MenuButton}" Click="ListaAdyacencia_Click"/>
+                <Button Content="Lazo" Style="{StaticResource MenuButton}" Click="AgregarLazo_Click"/>
+                <Button Content="Vaciar Grafo" Style="{StaticResource MenuButton}" Click="VaciarGrafo_Click"/>
             </WrapPanel>
-
         </StackPanel>
 
-        <!-- 🔥 CANVAS -->
-        <Border Grid.Row="1"
-            Background="#1A1A2E"
-            BorderBrush="#C084FC"
-            BorderThickness="1"
-            CornerRadius="10">
-
-            <ScrollViewer HorizontalScrollBarVisibility="Auto"
-                      VerticalScrollBarVisibility="Auto">
-
-                <Canvas x:Name="canvasGrafo"
-                    Width="1400"
-                    Height="800"/>
-
+        <Border Grid.Row="1" Background="#1A1A2E" BorderBrush="#C084FC" BorderThickness="1" CornerRadius="10">
+            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                <Canvas x:Name="canvasGrafo" 
+                        Width="1400" 
+                        Height="800" 
+                        Background="#1A1A2E" 
+        MouseLeftButtonDown="CanvasGrafo_MouseLeftButtonDown"/>
             </ScrollViewer>
-
         </Border>
-
     </Grid>
 </UserControl>
