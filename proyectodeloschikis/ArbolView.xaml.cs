@@ -15,235 +15,272 @@ using System.Windows.Shapes;
 
 namespace proyectodeloschikis
 {
+    // esta clase es para crear cada bolita del arbol
     public class Nodo
     {
         public string Valor { get; set; }
         public Nodo Izquierdo { get; set; }
         public Nodo Derecho { get; set; }
-        public Nodo(string v) { Valor = v; }
-    }
 
+        public Nodo(string v)
+        {
+            Valor = v;
+        }
+    }
     public partial class ArbolView : UserControl
     {
-        private Nodo raiz = null;
-
+        private Nodo raiz = null; // aqui guardamos el inicio de todo el arbol
         public ArbolView()
         {
             InitializeComponent();
         }
 
-        //  Comparacion
+        // esta funcion sirve para comparar si los datos son numeros o letras
         private int Comparar(string v1, string v2)
         {
+            // si marcamos enteros los convierte y compara cual es mas grande
             if (rbEnteros.IsChecked == true)
             {
                 if (int.TryParse(v1, out int n1) && int.TryParse(v2, out int n2))
                     return n1.CompareTo(n2);
-                return 0;
             }
-            return string.Compare(v1, v2);
+
+            // si no son numeros los compara como texto normal
+            return string.Compare(v1, v2, StringComparison.Ordinal);
         }
 
-        // Insertar 
+        // este es el boton para meter un dato nuevo
         private void Insertar_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtValor.Text)) 
-                return;
-            raiz = InsertarRecursivo(raiz, txtValor.Text);
-            txtValor.Clear();
-            DibujarArbol();
-        }
-
-        private void Eliminar_Click(object sender, RoutedEventArgs e)
-        {
             if (string.IsNullOrWhiteSpace(txtValor.Text)) return;
-            raiz = EliminarRecursivo(raiz, txtValor.Text);
+            raiz = InsertarRec(raiz, txtValor.Text);
             txtValor.Clear();
-            DibujarArbol();
+            DibujarArbol(); // despues de insertar volvemos a dibujar
         }
 
-        private void Buscar_Click(object sender, RoutedEventArgs e)
+        // funcion que busca el lugar vacio para poner el nuevo nodo
+        private Nodo InsertarRec(Nodo n, string v)
         {
-            if (string.IsNullOrWhiteSpace(txtValor.Text)) return;
-
-            bool encontrado = BuscarRecursivo(raiz, txtValor.Text);
-            txtResultado.Text = encontrado ? "El Valor no pudo ser encontrado." : "No existe en el árbol";
-            txtValor.Clear();
-        }
-
-        private void Altura_Click(object sender, RoutedEventArgs e)
-        {
-            txtResultado.Text = "Altura: " + GetAltura(raiz);
-        }
-
-        private void Minimo_Click(object sender, RoutedEventArgs e)
-        {
-            if (raiz == null) 
-                return;
-            txtResultado.Text = "Mínimo: " + BuscarMinimo(raiz).Valor;
-        }
-
-        private void Maximo_Click(object sender, RoutedEventArgs e)
-        {
-            if (raiz == null)
-                return;
-            Nodo aux = raiz;
-            while (aux.Derecho != null) aux = aux.Derecho;
-            txtResultado.Text = "Máximo: " + aux.Valor;
-        }
-
-        private void Nivel_Click(object sender, RoutedEventArgs e)
-        {
-            if (raiz == null)
-                return;
-            List<string> lista = new List<string>();
-            Queue<Nodo> cola = new Queue<Nodo>();
-            cola.Enqueue(raiz);
-            while (cola.Count > 0)
-            {
-                Nodo actual = cola.Dequeue();
-                lista.Add(actual.Valor);
-                if (actual.Izquierdo != null) cola.Enqueue(actual.Izquierdo);
-                if (actual.Derecho != null) cola.Enqueue(actual.Derecho);
-            }
-            txtResultado.Text = "Por Niveles: " + string.Join(" - ", lista);
-        }
-
-        private void InOrden_Click(object sender, RoutedEventArgs e)
-        {
-            List<string> l = new List<string>();
-            RecIn(raiz, l);
-            txtResultado.Text = "InOrden: " + string.Join(", ", l);
-        }
-
-        private void PreOrden_Click(object sender, RoutedEventArgs e)
-        {
-            List<string> l = new List<string>();
-            RecPre(raiz, l);
-            txtResultado.Text = "PreOrden: " + string.Join(", ", l);
-        }
-
-        private void PostOrden_Click(object sender, RoutedEventArgs e)
-        {
-            List<string> l = new List<string>();
-            RecPost(raiz, l);
-            txtResultado.Text = "PostOrden: " + string.Join(", ", l);
-        }
-
-        private void Reiniciar_Click(object sender, RoutedEventArgs e)
-        {
-            raiz = null;
-            txtResultado.Clear();
-            DibujarArbol();
-        }
-
-        // Parte Recursiva
-        private Nodo InsertarRecursivo(Nodo actual, string v)
-        {
-            if (actual == null)
-                return new Nodo(v);
-            int comp = Comparar(v, actual.Valor);
-            if (comp < 0) 
-                actual.Izquierdo = InsertarRecursivo(actual.Izquierdo, v);
-            else if (comp > 0)
-                actual.Derecho = InsertarRecursivo(actual.Derecho, v);
-            return actual;
-        }
-
-        private Nodo EliminarRecursivo(Nodo actual, string v)
-        {
-            if (actual == null) 
-                return null;
-            int comp = Comparar(v, actual.Valor);
-            if (comp < 0)
-                actual.Izquierdo = EliminarRecursivo(actual.Izquierdo, v);
-            else if (comp > 0)
-                actual.Derecho = EliminarRecursivo(actual.Derecho, v);
-            else
-            {
-                if (actual.Izquierdo == null) return actual.Derecho;
-                if (actual.Derecho == null) return actual.Izquierdo;
-                Nodo min = BuscarMinimo(actual.Derecho);
-                actual.Valor = min.Valor;
-                actual.Derecho = EliminarRecursivo(actual.Derecho, min.Valor);
-            }
-            return actual;
-        }
-
-        private bool BuscarRecursivo(Nodo n, string v)
-        {
-            if (n == null) return false;
-            if (n.Valor == v) return true;
-            return Comparar(v, n.Valor) < 0 ? BuscarRecursivo(n.Izquierdo, v) : BuscarRecursivo(n.Derecho, v);
-            txtValor.Clear();
-        }
-
-        private Nodo BuscarMinimo(Nodo n)
-        {
-            while (n.Izquierdo != null) n = n.Izquierdo;
+            if (n == null) return new Nodo(v);
+            int c = Comparar(v, n.Valor);
+            if (c < 0) n.Izquierdo = InsertarRec(n.Izquierdo, v);
+            else if (c > 0) n.Derecho = InsertarRec(n.Derecho, v);
             return n;
         }
 
-        private int GetAltura(Nodo n) => n == null ? 0 : 1 + Math.Max(GetAltura(n.Izquierdo), GetAltura(n.Derecho));
-
-        //  recorrido
-
-        private void RecIn(Nodo n, List<string> l)
+        // boton para borrar un numero o letra
+        private void Eliminar_Click(object sender, RoutedEventArgs e)
         {
-            if (n != null)
-            {
-                RecIn(n.Izquierdo, l);
-                l.Add(n.Valor);
-                RecIn(n.Derecho, l);
-            }
+            if (string.IsNullOrWhiteSpace(txtValor.Text)) return;
+            raiz = EliminarRec(raiz, txtValor.Text);
+            txtValor.Clear();
+            DibujarArbol();
         }
 
-        private void RecPre(Nodo n, List<string> l)
+        // funcion que busca el nodo y lo quita acomodando los hijos
+        private Nodo EliminarRec(Nodo n, string v)
         {
-            if (n != null)
+            if (n == null) return null;
+            int c = Comparar(v, n.Valor);
+            if (c < 0) n.Izquierdo = EliminarRec(n.Izquierdo, v);
+            else if (c > 0) n.Derecho = EliminarRec(n.Derecho, v);
+            else
             {
-                l.Add(n.Valor);
-                RecPre(n.Izquierdo, l);
-                RecPre(n.Derecho, l);
+                if (n.Izquierdo == null) return n.Derecho;
+                if (n.Derecho == null) return n.Izquierdo;
+                Nodo m = n.Derecho;
+                while (m.Izquierdo != null) m = m.Izquierdo;
+                n.Valor = m.Valor;
+                n.Derecho = EliminarRec(n.Derecho, m.Valor);
             }
-        }
-       
-        private void RecPost(Nodo n, List<string> l)
-        {
-            if (n != null)
-            {
-                RecPost(n.Izquierdo, l);
-                RecPost(n.Derecho, l);
-                l.Add(n.Valor);
-            }
+            return n;
         }
 
-        // CANVA
+        // este boton arregla el arbol para que no este mas largo de un lado
+        private void Balancear_Click(object sender, RoutedEventArgs e)
+        {
+            if (raiz == null) return;
+            List<string> l = new List<string>();
+            PasarALista(raiz, l); // primero pasamos todo a una lista
+            raiz = CrearBalanceado(l, 0, l.Count - 1); // luego lo armamos bien parejo
+            DibujarArbol();
+            txtResultado.Text = "Arbol equilibrado correctamente";
+        }
+
+        // mete todos los datos del arbol en una lista ordenada
+        private void PasarALista(Nodo n, List<string> l)
+        {
+            if (n == null) return;
+            PasarALista(n.Izquierdo, l);
+            l.Add(n.Valor);
+            PasarALista(n.Derecho, l);
+        }
+
+        // agarra la lista y pone el del medio como raiz para que este balanceado
+        private Nodo CrearBalanceado(List<string> l, int ini, int fin)
+        {
+            if (ini > fin) return null;
+            int m = (ini + fin) / 2;
+            Nodo n = new Nodo(l[m]);
+            n.Izquierdo = CrearBalanceado(l, ini, m - 1);
+            n.Derecho = CrearBalanceado(l, m + 1, fin);
+            return n;
+        }
+
+        // busca si un valor existe o no
+        private void Buscar_Click(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtValor.Text)) return;
+            txtResultado.Text = (Encontrar(raiz, txtValor.Text) != null) ? "Si existe" : "No existe";
+        }
+
+        // baja por las ramas buscando el valor
+        private Nodo Encontrar(Nodo n, string v)
+        {
+            if (n == null || n.Valor == v) return n;
+            int c = Comparar(v, n.Valor);
+            return c < 0 ? Encontrar(n.Izquierdo, v) : Encontrar(n.Derecho, v);
+        }
+
+        // este boton nos dice en que piso esta el numero
+        private void Nivel_Click(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtValor.Text)) return;
+            int niv = GetNiv(raiz, txtValor.Text, 1);
+            txtResultado.Text = niv != -1 ? "Nivel: " + niv : "No encontrado";
+        }
+
+        // va contando mientras baja para saber el nivel
+        private int GetNiv(Nodo n, string v, int niv)
+        {
+            if (n == null) return -1;
+            int c = Comparar(v, n.Valor);
+            if (c == 0) return niv;
+            int sig = c < 0 ? GetNiv(n.Izquierdo, v, niv + 1) : GetNiv(n.Derecho, v, niv + 1);
+            return sig;
+        }
+
+        // calcula que tan alto es el arbol
+        private void Altura_Click(object sender, RoutedEventArgs e)
+        {
+            txtResultado.Text = "Altura: " + GetAlt(raiz);
+        }
+
+        private int GetAlt(Nodo n)
+        {
+            if (n == null) return 0;
+            return 1 + Math.Max(GetAlt(n.Izquierdo), GetAlt(n.Derecho));
+        }
+
+        // busca el valor mas chico Tener encuenta que los menores van a la izquierda y los mayores por enden a la derecha
+        private void Minimo_Click(object sender, RoutedEventArgs e)
+        {
+            if (raiz == null) return;
+            Nodo aux = raiz;
+            while (aux.Izquierdo != null) aux = aux.Izquierdo;
+            txtResultado.Text = "Minimo: " + aux.Valor;
+        }
+
+        // busca el valor mas grande siempre ubicados en la derecha
+        private void Maximo_Click(object sender, RoutedEventArgs e)
+        {
+            if (raiz == null) return;
+            Nodo aux = raiz;
+            while (aux.Derecho != null) aux = aux.Derecho;
+            txtResultado.Text = "Maximo: " + aux.Valor;
+        }
+
+        // muestra el arbol en orden: izquierda, raiz, derecha
+        private void InOrden_Click(object sender, RoutedEventArgs e)
+        {
+            List<string> l = new List<string>();
+            PasarALista(raiz, l);
+            txtResultado.Text = "InOrden: " + string.Join(", ", l);
+        }
+
+        // muestra el arbol en pre orden: raiz, izquierda, derecha
+        private void PreOrden_Click(object sender, RoutedEventArgs e)
+        {
+            List<string> l = new List<string>();
+            Pre(raiz, l);
+            txtResultado.Text = "PreOrden: " + string.Join(", ", l);
+        }
+        private void Pre(Nodo n, List<string> l) { if (n == null) return; l.Add(n.Valor); Pre(n.Izquierdo, l); Pre(n.Derecho, l); }
+
+        // muestra el arbol en post orden: izquierda, derecha, raiz
+        private void PostOrden_Click(object sender, RoutedEventArgs e)
+        {
+            List<string> l = new List<string>();
+            Post(raiz, l);
+            txtResultado.Text = "PostOrden: " + string.Join(", ", l);
+        }
+        private void Post(Nodo n, List<string> l) { if (n == null) return; Post(n.Izquierdo, l); Post(n.Derecho, l); l.Add(n.Valor); }
+
+        // borra todo para empezar de cero
+        private void Reiniciar_Click(object sender, RoutedEventArgs e)
+        {
+            raiz = null;
+            canvasArbol.Children.Clear();
+            txtResultado.Clear();
+        }
+
+        // esta parte limpia el dibujo y lo vuelve a pintar
         private void DibujarArbol()
         {
             canvasArbol.Children.Clear();
-            if (raiz != null) DibujarNodo(raiz, 400, 40, 180);
+            if (raiz != null)
+            {
+                // usamos 400 para que empiece en el centro de la pantalla
+                DibujarNodo(raiz, 400, 40, 160);
+            }
         }
 
-        private void DibujarNodo(Nodo n, double x, double y, double off)
+        // esta funcion dibuja cada circulo y las lineas que los unen
+        private void DibujarNodo(Nodo n, double x, double y, double s)
         {
-            if (n == null) 
-                return;
+            if (n == null) return;
+
+            // dibuja la linea para el hijo izquierdo
             if (n.Izquierdo != null)
             {
-                canvasArbol.Children.Add(new Line { X1 = x, Y1 = y, X2 = x - off, Y2 = y + 60, Stroke = Brushes.White, StrokeThickness = 1.5 });
-                DibujarNodo(n.Izquierdo, x - off, y + 60, off / 2);
+                Line l = new Line
+                {
+                    X1 = x,
+                    Y1 = y,
+                    X2 = x - s,
+                    Y2 = y + 60,
+                    Stroke = Brushes.White,
+                    StrokeThickness = 2
+                };
+                canvasArbol.Children.Add(l);
+                DibujarNodo(n.Izquierdo, x - s, y + 60, s / 2);
             }
+            // dibuja la linea para el hijo derecho
             if (n.Derecho != null)
             {
-                canvasArbol.Children.Add(new Line { X1 = x, Y1 = y, X2 = x + off, Y2 = y + 60, Stroke = Brushes.White, StrokeThickness = 1.5 });
-                DibujarNodo(n.Derecho, x + off, y + 60, off / 2);
+                Line l = new Line
+                {
+                    X1 = x,
+                    Y1 = y,
+                    X2 = x + s,
+                    Y2 = y + 60,
+                    Stroke = Brushes.White,
+                    StrokeThickness = 2
+                };
+                canvasArbol.Children.Add(l);
+                DibujarNodo(n.Derecho, x + s, y + 60, s / 2);
             }
-            Ellipse ell = new Ellipse { Width = 30, Height = 30, Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#C084FC")), Stroke = Brushes.White };
-            Canvas.SetLeft(ell, x - 15); Canvas.SetTop(ell, y - 15);
-            canvasArbol.Children.Add(ell);
-            TextBlock t = new TextBlock { Text = n.Valor, Foreground = Brushes.Black, FontWeight = FontWeights.Bold, FontSize = 11 };
-            Canvas.SetLeft(t, x - 6); Canvas.SetTop(t, y - 8);
+
+            // crea el circulo morado del nodo
+            Ellipse el = new Ellipse { Width = 32, Height = 32, Fill = Brushes.MediumPurple, Stroke = Brushes.White, StrokeThickness = 1.5 };
+            Canvas.SetLeft(el, x - 16);
+            Canvas.SetTop(el, y - 16);
+            canvasArbol.Children.Add(el);
+
+            // pone el valor adentro de la bolita
+            TextBlock t = new TextBlock { Text = n.Valor, Foreground = Brushes.White, FontWeight = FontWeights.Bold, FontSize = 13 };
+            Canvas.SetLeft(t, x - 9);
+            Canvas.SetTop(t, y - 9);
             canvasArbol.Children.Add(t);
         }
     }
