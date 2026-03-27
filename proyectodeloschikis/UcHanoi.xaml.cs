@@ -20,6 +20,7 @@ namespace proyectodeloschikis
     /// </summary>
     public partial class UcHanoi : UserControl
     {
+        private int contadorMovimientos = 0;
         private List<Rectangle> discos = new List<Rectangle>();
         private List<Stack<Rectangle>> torres = new List<Stack<Rectangle>>();
         private int numDiscos = 5;
@@ -59,6 +60,8 @@ namespace proyectodeloschikis
             canvasB.Children.Clear();
             canvasC.Children.Clear();
             lstMovimientos.Items.Clear();
+            contadorMovimientos = 0;
+            txtContador.Text = "Movimientos: 0";
 
             double anchoBase = 160;
             double alturaDisco = 28;
@@ -108,58 +111,32 @@ namespace proyectodeloschikis
             Rectangle disco = torres[desde].Pop();
             torres[hacia].Push(disco);
 
-            // === PARTE IMPORTANTE: CAMBIAR DE CANVAS ===
             Canvas canvasDesde = desde == 0 ? canvasA : desde == 1 ? canvasB : canvasC;
             Canvas canvasHacia = hacia == 0 ? canvasA : hacia == 1 ? canvasB : canvasC;
 
-            // Quitar el disco del canvas anterior
+            // Quitar del canvas viejo
             canvasDesde.Children.Remove(disco);
 
-            // Agregar el disco al nuevo canvas
+            // Agregar al nuevo canvas
             canvasHacia.Children.Add(disco);
 
-            // Calcular nueva posición Y (base de la torre)
             double alturaDisco = 28;
-            double nuevaY = 280 - torres[hacia].Count * alturaDisco - 10;
 
-            // Posición X centrada en la nueva torre
+            // Nueva posición
+            double nuevaY = 280 - torres[hacia].Count * alturaDisco - 10;
             double nuevaX = (180 - disco.Width) / 2;
 
-            // === ANIMACIÓN SUAVE ===
-            double xInicial = Canvas.GetLeft(disco);
-            double yInicial = Canvas.GetTop(disco);
-
-            // 1. Subir el disco
-            for (int i = 0; i < 35; i++)
-            {
-                Canvas.SetTop(disco, yInicial - i * 4);
-                await Task.Delay(6);
-            }
-
-            // 2. Mover horizontalmente
-            double pasoX = (nuevaX + (hacia - desde) * 200 - xInicial) / 45;
-            for (int i = 0; i < 45; i++)
-            {
-                Canvas.SetLeft(disco, xInicial + i * pasoX);
-                await Task.Delay(6);
-            }
-
-            // 3. Bajar el disco
-            for (int i = 0; i < 35; i++)
-            {
-                Canvas.SetTop(disco, 240 - i * 3 + (i * (nuevaY - 240) / 35));
-                await Task.Delay(6);
-            }
-
-            // Posición final exacta
+            // 🔥 TELETRANSPORTE DIRECTO
             Canvas.SetLeft(disco, nuevaX);
             Canvas.SetTop(disco, nuevaY);
 
-            // Registrar movimiento
+            // Registro
             lstMovimientos.Items.Add($"Mover disco de {(char)('A' + desde)} → {(char)('A' + hacia)}");
+            contadorMovimientos++;
+            txtContador.Text = "Movimientos: " + contadorMovimientos;
             lstMovimientos.ScrollIntoView(lstMovimientos.Items[lstMovimientos.Items.Count - 1]);
 
-            await Task.Delay(250); // pausa entre movimientos
+            await Task.Delay(200); // opcional (para que se vea el proceso)
         }
     }
 }
