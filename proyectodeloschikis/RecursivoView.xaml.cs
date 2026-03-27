@@ -211,13 +211,10 @@ namespace proyectodeloschikis
         }
 
         // 3. Producto Vector
-        
         private long ProductoVector(List<int> vec, int i)
         {
-            
             if (i == vec.Count) return 1;
             return vec[i] * ProductoVector(vec, i + 1);
-            
         }
 
         // 4. Menor Vector

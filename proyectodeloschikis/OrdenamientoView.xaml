@@ -90,6 +90,7 @@
                 </StackPanel>
 
             </Grid>
+
             <Button Content="Limpiar Vector Ordenado"
                  Style="{StaticResource MenuButton}"
                  Click="btnLimpiarOrdenado_Click"
