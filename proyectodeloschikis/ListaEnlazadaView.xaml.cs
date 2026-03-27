@@ -43,62 +43,91 @@ namespace proyectodeloschikis
         // agregar al inicio
         void AgregarInicio_Click(object sender, RoutedEventArgs e)
         {
-            int m = int.Parse(txtValor.Text);
-            lista.AddFirst(m);
-            Mostrar();
+            validacion.EjecutarSeguro(() =>
+            {
+                if (!validacion.EsEntero(txtValor.Text, out int m)) return;
 
-            txtValor.Clear(); 
+                lista.AddFirst(m);
+                Mostrar();
+                txtValor.Clear();
+            });
         }
-        
 
         // agregar al final
         void AgregarFinal_Click(object sender, RoutedEventArgs e)
         {
-            int m = int.Parse(txtValor.Text);
-            lista.AddLast(m);
-            Mostrar();
-            txtValor.Clear();
+            validacion.EjecutarSeguro(() =>
+            {
+                if (!validacion.EsEntero(txtValor.Text, out int m)) return;
+
+                lista.AddLast(m);
+                Mostrar();
+                txtValor.Clear();
+            });
         }
 
         // eliminar primer elemento
         void EliminarInicio_Click(object sender, RoutedEventArgs e)
         {
-            if (lista.Count > 0)
-                lista.RemoveFirst();
+            if (lista.Count == 0)
+            {
+                MessageBox.Show("La lista está vacía", "Advertencia",
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
 
+            lista.RemoveFirst();
             Mostrar();
         }
 
         // eliminar último elemento
         void EliminarFinal_Click(object sender, RoutedEventArgs e)
         {
-            if (lista.Count > 0)
-                lista.RemoveLast();
+            if (lista.Count == 0)
+            {
+                MessageBox.Show("La lista está vacía", "Advertencia",
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
 
+            lista.RemoveLast();
             Mostrar();
         }
 
         // buscar elemento
         void Buscar_Click(object sender, RoutedEventArgs e)
         {
-            int m = int.Parse(txtbucarelemtolista.Text);
+            validacion.EjecutarSeguro(() =>
+            {
+                if (!validacion.EsEntero(txtbucarelemtolista.Text, out int m)) return;
 
-            if (lista.Contains(m))
-                MessageBox.Show("Elemento encontrado");
-            else
-                MessageBox.Show("Elemento no encontrado");
-            txtbucarelemtolista.Clear();
+                if (lista.Contains(m))
+                    MessageBox.Show("Elemento encontrado", "Resultado",
+                        MessageBoxButton.OK, MessageBoxImage.Information);
+                else
+                    MessageBox.Show("Elemento no encontrado", "Resultado",
+                        MessageBoxButton.OK, MessageBoxImage.Information);
+
+                txtbucarelemtolista.Clear();
+            });
         }
 
         // verificar si está vacía
         void EstaVacia_Click(object sender, RoutedEventArgs e)
         {
-            txtVacia.Text = lista.Count == 0 ? "Si" : "No";
+            txtVacia.Text = lista.Count == 0 ? "Sí" : "No";
         }
 
         // sumar elementos
         void Suma_Click(object sender, RoutedEventArgs e)
         {
+            if (lista.Count == 0)
+            {
+                MessageBox.Show("La lista está vacía", "Advertencia",
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             int suma = lista.Sum();
             txtSuma.Text = suma.ToString();
         }
@@ -106,26 +135,41 @@ namespace proyectodeloschikis
         // calcular media
         void Media_Click(object sender, RoutedEventArgs e)
         {
-            if (lista.Count > 0)
+            if (lista.Count == 0)
             {
-                double media = lista.Average();
-                txtMedia.Text = media.ToString();
+                MessageBox.Show("La lista está vacía", "Advertencia",
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
             }
+
+            double media = lista.Average();
+            txtMedia.Text = media.ToString("F2");   // 2 decimales para mejor visualización
         }
 
         // encontrar mayor
         void Mayor_Click(object sender, RoutedEventArgs e)
         {
-            if (lista.Count > 0)
+            if (lista.Count == 0)
             {
-                int mayor = lista.Max();
-                txtMayor.Text = mayor.ToString();
+                MessageBox.Show("La lista está vacía", "Advertencia",
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
             }
+
+            int mayor = lista.Max();
+            txtMayor.Text = mayor.ToString();
         }
 
         // ordenar descendente
         void Ordenar_Click(object sender, RoutedEventArgs e)
         {
+            if (lista.Count == 0)
+            {
+                MessageBox.Show("La lista está vacía", "Advertencia",
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             List<int> m = lista.ToList();
             m.Sort();
             m.Reverse();

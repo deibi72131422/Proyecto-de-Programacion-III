@@ -23,5 +23,10 @@ namespace proyectodeloschikis
         {
             InitializeComponent();
         }
+
+        public void Cargar(List<string> items)
+        {
+            listaAdyacencia.ItemsSource = items;
+        }
     }
 }

@@ -10,6 +10,31 @@
         <DataGrid x:Name="matrizGrid"
                   Background="#1A1A2E"
                   Foreground="White"
-                  BorderBrush="#C084FC"/>
+                  BorderBrush="#C084FC"
+                  AutoGenerateColumns="True"
+                  IsReadOnly="True"
+                  RowBackground="#1A1A2E"
+                  AlternatingRowBackground="#131326"
+                  GridLinesVisibility="None"
+                  ColumnHeaderHeight="30"
+                  HorizontalGridLinesBrush="#2A2233"
+                  VerticalGridLinesBrush="#2A2233"
+                  Margin="6">
+            <DataGrid.Resources>
+                <Style TargetType="DataGridColumnHeader">
+                    <Setter Property="Background" Value="#1A1A2E"/>
+                    <Setter Property="Foreground" Value="#C084FC"/>
+                    <Setter Property="FontWeight" Value="Bold"/>
+                    <Setter Property="BorderBrush" Value="#C084FC"/>
+                    <Setter Property="Padding" Value="6,4"/>
+                </Style>
+                <Style TargetType="DataGridCell">
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Setter Property="Padding" Value="6,2"/>
+                </Style>
+            </DataGrid.Resources>
+        </DataGrid>
     </Grid>
 </Window>

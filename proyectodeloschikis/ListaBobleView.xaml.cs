@@ -19,69 +19,117 @@ namespace proyectodeloschikis
         // mostrar elementos en la lista visual
         void Mostrar()
         {
-            listaDatos.Items.Clear();
-
-            foreach (int m in lista)
-                listaDatos.Items.Add(m);
+            listaDatos.ItemsSource = null;
+            listaDatos.ItemsSource = lista;
         }
 
-        // agregar al inicio
+        // 🔹 agregar al inicio
         void AgregarInicio_Click(object sender, RoutedEventArgs e)
         {
-            int m = int.Parse(txtValor.Text);
-            lista.AddFirst(m);
-            txtValor.Clear();
-            Mostrar();
+            validacion.EjecutarSeguro(() =>
+            {
+                if (!validacion.EsEntero(txtValor.Text, out int m))
+                {
+                    txtValor.Clear();
+                    return;
+                }
+
+                lista.AddFirst(m);
+                txtValor.Clear();
+                Mostrar();
+            });
         }
 
-        // agregar al final
+        // 🔹 agregar al final
         void AgregarFinal_Click(object sender, RoutedEventArgs e)
         {
-            int m = int.Parse(txtValor.Text);
-            lista.AddLast(m);
-            txtValor.Clear();
-            Mostrar();
+            validacion.EjecutarSeguro(() =>
+            {
+                if (!validacion.EsEntero(txtValor.Text, out int m))
+                {
+                    txtValor.Clear();
+                    return;
+                }
+
+                lista.AddLast(m);
+                txtValor.Clear();
+                Mostrar();
+            });
         }
 
-        // eliminar inicio
+        // 🔹 eliminar inicio
         void EliminarInicio_Click(object sender, RoutedEventArgs e)
         {
-            if (lista.Count > 0)
-                lista.RemoveFirst();
+            if (lista.Count == 0)
+            {
+                MessageBox.Show("La lista está vacía", "Advertencia",
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
 
+            lista.RemoveFirst();
             Mostrar();
         }
 
-        // eliminar final
+        // 🔹 eliminar final
         void EliminarFinal_Click(object sender, RoutedEventArgs e)
         {
-            if (lista.Count > 0)
-                lista.RemoveLast();
+            if (lista.Count == 0)
+            {
+                MessageBox.Show("La lista está vacía", "Advertencia",
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
 
+            lista.RemoveLast();
             Mostrar();
         }
 
-        // buscar elemento
+        // 🔹 buscar elemento
         void Buscar_Click(object sender, RoutedEventArgs e)
         {
-            int m = int.Parse(txtBuscar.Text);
+            validacion.EjecutarSeguro(() =>
+            {
+                if (lista.Count == 0)
+                {
+                    MessageBox.Show("La lista está vacía", "Advertencia",
+                        MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
 
-            if (lista.Contains(m))
-                MessageBox.Show("Elemento encontrado");
-            else
-                MessageBox.Show("Elemento no encontrado");
-            txtBuscar.Clear();
+                if (!validacion.EsEntero(txtBuscar.Text, out int m))
+                {
+                    txtBuscar.Clear();
+                    return;
+                }
+
+                if (lista.Contains(m))
+                    MessageBox.Show("Elemento encontrado", "Resultado",
+                        MessageBoxButton.OK, MessageBoxImage.Information);
+                else
+                    MessageBox.Show("Elemento no encontrado", "Resultado",
+                        MessageBoxButton.OK, MessageBoxImage.Information);
+
+                txtBuscar.Clear();
+            });
         }
 
-        // verificar si la lista está vacía
+        // 🔹 verificar si la lista está vacía
         void EstaVacia_Click(object sender, RoutedEventArgs e)
         {
-            txtEstaVacia.Text = lista.Count == 0 ? "Si" : "No";
+            txtEstaVacia.Text = lista.Count == 0 ? "Sí" : "No";
         }
 
-        // ordenar ascendente
+        // 🔹 ordenar ascendente
         void Ordenar_Click(object sender, RoutedEventArgs e)
         {
+            if (lista.Count == 0)
+            {
+                MessageBox.Show("La lista está vacía", "Advertencia",
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             List<int> temp = lista.ToList();
             temp.Sort();
 
@@ -93,7 +141,7 @@ namespace proyectodeloschikis
             Mostrar();
         }
 
-        // limpiar lista
+        // 🔹 limpiar lista
         void Limpiar_Click(object sender, RoutedEventArgs e)
         {
             lista.Clear();

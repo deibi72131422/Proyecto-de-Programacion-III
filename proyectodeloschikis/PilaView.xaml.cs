@@ -46,26 +46,48 @@ namespace proyectodeloschikis
             }
         }
 
-        // insertar
+        // insertar (Push)
         void Push_Click(object sender, RoutedEventArgs e)
         {
-            if (pila.Count < capacidad)
+            validacion.EjecutarSeguro(() =>
             {
-                int m = int.Parse(txtPush.Text);
+                // Validar que no esté vacía la caja de texto
+                if (string.IsNullOrWhiteSpace(txtPush.Text))
+                {
+                    MessageBox.Show("Ingrese un número para agregar a la pila", "Advertencia",
+                        MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                // Validar que sea entero
+                if (!validacion.EsEntero(txtPush.Text, out int m)) return;
+
+                // Validar capacidad
+                if (pila.Count >= capacidad)
+                {
+                    MessageBox.Show("La pila está llena. No se puede agregar más elementos.", "Advertencia",
+                        MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
                 pila.Push(m);
                 txtPush.Clear();
                 Mostrar();
-            }
+            });
         }
 
-        // quitar
+        // quitar (Pop)
         void Pop_Click(object sender, RoutedEventArgs e)
         {
-            if (pila.Count > 0)
+            if (pila.Count == 0)
             {
-                pila.Pop();
-                Mostrar();
+                MessageBox.Show("La pila está vacía", "Advertencia",
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
             }
+
+            pila.Pop();
+            Mostrar();
         }
 
         // limpiar
@@ -78,13 +100,13 @@ namespace proyectodeloschikis
         // esta vacia
         void EstaVacia_Click(object sender, RoutedEventArgs e)
         {
-            txtEstaVaciaPila.Text = pila.Count == 0 ? "Si" : "No";
+            txtEstaVaciaPila.Text = pila.Count == 0 ? "Sí" : "No";
         }
 
         // esta llena
         void EstaLlena_Click(object sender, RoutedEventArgs e)
         {
-            txtEstaLlenaPila.Text = pila.Count == capacidad ? "Si" : "No";
+            txtEstaLlenaPila.Text = pila.Count == capacidad ? "Sí" : "No";
         }
 
         // capacidad
@@ -96,8 +118,14 @@ namespace proyectodeloschikis
         // ver cima
         void VerCima_Click(object sender, RoutedEventArgs e)
         {
-            if (pila.Count > 0)
-                txtCimaPila.Text = pila.Peek().ToString();
+            if (pila.Count == 0)
+            {
+                MessageBox.Show("La pila está vacía", "Advertencia",
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            txtCimaPila.Text = pila.Peek().ToString();
         }
     }
 }

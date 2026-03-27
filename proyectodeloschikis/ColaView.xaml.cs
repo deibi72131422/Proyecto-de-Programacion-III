@@ -31,22 +31,40 @@ namespace proyectodeloschikis
         // insertar
         private void btnInsertar_Click(object sender, RoutedEventArgs e)
         {
-            if (cola.Count < max)
+            validacion.EjecutarSeguro(() =>
             {
-                cola.Enqueue(txtInsertar.Text);
-                listaDatos.Items.Add(txtInsertar.Text);
+                // Validar que no esté vacío y recuperar valor limpio
+                if (!validacion.EsTextoValido(txtInsertar.Text, out string valor)) return;
+
+                // Validar alfanumérico y longitud máxima para evitar entradas problemáticas
+                if (!validacion.EsAlfaNumerico(valor, out string alfaValor, 50)) return;
+
+                // Validar que no esté llena la cola
+                if (cola.Count >= max)
+                {
+                    MessageBox.Show("La cola está llena. No se puede agregar más elementos.", "Advertencia",
+                        MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                cola.Enqueue(alfaValor);
+                listaDatos.Items.Add(alfaValor);        // Mantenemos el comportamiento original
                 txtInsertar.Clear();
-            }
+            });
         }
 
         // quitar
         private void btnQuitar_Click(object sender, RoutedEventArgs e)
         {
-            if (cola.Count > 0)
+            if (cola.Count == 0)
             {
-                cola.Dequeue();
-                listaDatos.Items.RemoveAt(0);
+                MessageBox.Show("La cola está vacía", "Advertencia",
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
             }
+
+            cola.Dequeue();
+            listaDatos.Items.RemoveAt(0);   // Mantenemos el comportamiento original
         }
 
         // limpiar
@@ -59,19 +77,13 @@ namespace proyectodeloschikis
         // esta vacia
         private void btnVacia_Click(object sender, RoutedEventArgs e)
         {
-            if (cola.Count == 0)
-                txtEstaVacia.Text = "Si";
-            else
-                txtEstaVacia.Text = "No";
+            txtEstaVacia.Text = cola.Count == 0 ? "Sí" : "No";
         }
 
         // esta llena
         private void btnLlena_Click(object sender, RoutedEventArgs e)
         {
-            if (cola.Count == max)
-                txtEstaLlena.Text = "Si";
-            else
-                txtEstaLlena.Text = "No";
+            txtEstaLlena.Text = cola.Count == max ? "Sí" : "No";
         }
 
         // tamaño maximo
@@ -80,11 +92,17 @@ namespace proyectodeloschikis
             txtTamanoMaximo.Text = max.ToString();
         }
 
-        // cima
+        // cima (frente de la cola)
         private void btnCima_Click(object sender, RoutedEventArgs e)
         {
-            if (cola.Count > 0)
-                txtCima.Text = cola.Peek();
+            if (cola.Count == 0)
+            {
+                MessageBox.Show("La cola está vacía", "Advertencia",
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            txtCima.Text = cola.Peek();
         }
     }
 }

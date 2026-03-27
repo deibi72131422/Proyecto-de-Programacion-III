@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Data;
 
 namespace proyectodeloschikis
 {
@@ -34,6 +35,13 @@ namespace proyectodeloschikis
 
     public partial class GrafosView : UserControl
     {
+        // === ADICIONES POR Copilot ===
+        // Variables para arrastrar nodos con el mouse
+        private Vertice selectedVertice = null;
+        private bool isDragging = false;
+        private Point lastMousePos;
+        // === FIN ADICIONES POR Copilot ===
+
         // Variables globales del grafo
         private List<Vertice> listaVertices = new List<Vertice>();
         private int contadorId = 1;
@@ -47,68 +55,138 @@ namespace proyectodeloschikis
         // Evento para crear un nuevo nodo en el dibujo
         private void NuevoVertice_Click(object sender, RoutedEventArgs e)
         {
-            // Si el cuadro de texto esta vacio usa el contador D
-            string nD = string.IsNullOrEmpty(D_txtNuevoNodo.Text) ? contadorId.ToString() : D_txtNuevoNodo.Text;
-
-            // Revisa que el nombre del nodo no este repetido en la lista
-            if (!listaVertices.Any(v => v.nNombre == nD))
+            validacion.EjecutarSeguro(() =>
             {
-                listaVertices.Add(new Vertice(nD, new Point(0, 0)));
-                if (string.IsNullOrEmpty(D_txtNuevoNodo.Text)) contadorId++;
+                // Si está vacío usamos el contador, si no validar y normalizar
+                string nombre;
+                if (string.IsNullOrWhiteSpace(D_txtNuevoNodo.Text))
+                {
+                    nombre = contadorId.ToString();
+                }
+                else
+                {
+                    if (!validacion.EsAlfaNumerico(D_txtNuevoNodo.Text, out nombre, 20))
+                    {
+                        D_txtNuevoNodo.Clear();
+                        return;
+                    }
+                }
+
+                // Revisa que el nombre del nodo no este repetido (insensible a mayúsculas)
+                if (listaVertices.Any(v => string.Equals(v.nNombre?.Trim(), nombre, StringComparison.OrdinalIgnoreCase)))
+                {
+                    MessageBox.Show($" Nombre duplicado ('{nombre}'). No se permiten nodos con el mismo nombre.", "Aviso", MessageBoxButton.OK, MessageBoxImage.Information);
+                    D_txtNuevoNodo.Clear();
+                    return;
+                }
+
+                listaVertices.Add(new Vertice(nombre, new Point(0, 0)));
+                if (string.IsNullOrWhiteSpace(D_txtNuevoNodo.Text)) contadorId++;
 
                 // Ordena y dibuja de nuevo
                 AcomodarNodosEnCirculo();
                 DibujarGrafoCompleto();
-            }
-            D_txtNuevoNodo.Clear();
+
+                D_txtNuevoNodo.Clear();
+            });
         }
 
         // Evento para conectar dos nodos existentes
         private void NuevaArista_Click(object sender, RoutedEventArgs e)
         {
-            // Busca los nodos por el nombre que pusiste en los TXT
-            var vO = listaVertices.FirstOrDefault(v => v.nNombre == D_txtO.Text);
-            var vD = listaVertices.FirstOrDefault(v => v.nNombre == D_txtD.Text);
-
-            // Solo crea la linea si ambos existen y no son el mismo
-            if (vO != null && vD != null && vO != vD)
+            validacion.EjecutarSeguro(() =>
             {
+                if (!validacion.EsTextoValido(D_txtO.Text, out string origen) || !validacion.EsTextoValido(D_txtD.Text, out string destino))
+                {
+                    LimpiarEntradasTexto();
+                    return;
+                }
+
+                var vO = listaVertices.FirstOrDefault(v => string.Equals(v.nNombre?.Trim(), origen, StringComparison.OrdinalIgnoreCase));
+                var vD = listaVertices.FirstOrDefault(v => string.Equals(v.nNombre?.Trim(), destino, StringComparison.OrdinalIgnoreCase));
+
+                if (vO == null)
+                {
+                    MessageBox.Show($" Nodo origen '{origen}' no encontrado. Revisa el nombre ingresado.", "Aviso", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    LimpiarEntradasTexto();
+                    return;
+                }
+                if (vD == null)
+                {
+                    MessageBox.Show($" Nodo destino '{destino}' no encontrado. Revisa el nombre ingresado.", "Aviso", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    LimpiarEntradasTexto();
+                    return;
+                }
+                if (vO == vD)
+                {
+                    MessageBox.Show($" Origen y destino son el mismo nodo ('{origen}'). No se crea la arista.", "Aviso", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    LimpiarEntradasTexto();
+                    return;
+                }
+
                 if (!vO.lAristas.Any(a => a.vDestino == vD))
                 {
                     vO.lAristas.Add(new Arista(vD));
                     DibujarGrafoCompleto();
                 }
-            }
-            LimpiarEntradasTexto();
+
+                LimpiarEntradasTexto();
+            });
         }
 
         // Evento para borrar un nodo especifico
         private void EliminarNodo_Click(object sender, RoutedEventArgs e)
         {
-            // Busca el nodo segun el texto ingresado
-            var vE = listaVertices.FirstOrDefault(v => v.nNombre == D_txtNuevoNodo.Text);
-            if (vE != null)
+            validacion.EjecutarSeguro(() =>
             {
+                if (!validacion.EsTextoValido(D_txtNuevoNodo.Text, out string nombre))
+                {
+                    D_txtNuevoNodo.Clear();
+                    return;
+                }
+
+                var vE = listaVertices.FirstOrDefault(v => string.Equals(v.nNombre?.Trim(), nombre, StringComparison.OrdinalIgnoreCase));
+                if (vE == null)
+                {
+                    MessageBox.Show($" Nodo '{nombre}' no encontrado. Asegúrate de que el nombre sea correcto.", "Aviso", MessageBoxButton.OK, MessageBoxImage.Information);
+                    D_txtNuevoNodo.Clear();
+                    return;
+                }
+
                 // Borra el nodo y tambien las flechas que apuntaban a el
                 listaVertices.Remove(vE);
                 foreach (var vT in listaVertices) vT.lAristas.RemoveAll(a => a.vDestino == vE);
 
                 AcomodarNodosEnCirculo();
                 DibujarGrafoCompleto();
-            }
-            D_txtNuevoNodo.Clear();
+
+                D_txtNuevoNodo.Clear();
+            });
         }
 
         // Evento para crear un lazo (apunta a si mismo)
         private void AgregarLazo_Click(object sender, RoutedEventArgs e)
         {
-            var vN = listaVertices.FirstOrDefault(v => v.nNombre == D_txtO.Text);
-            if (vN != null && !vN.lAristas.Any(a => a.vDestino == vN))
+            validacion.EjecutarSeguro(() =>
             {
-                vN.lAristas.Add(new Arista(vN));
-                DibujarGrafoCompleto();
-            }
-            LimpiarEntradasTexto();
+                if (!validacion.EsTextoValido(D_txtO.Text, out string origen)) { LimpiarEntradasTexto(); return; }
+
+                var vN = listaVertices.FirstOrDefault(v => string.Equals(v.nNombre?.Trim(), origen, StringComparison.OrdinalIgnoreCase));
+                if (vN == null)
+                {
+                    MessageBox.Show($" Nodo '{origen}' no encontrado. No se puede agregar un lazo.", "Aviso", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    LimpiarEntradasTexto();
+                    return;
+                }
+
+                if (!vN.lAristas.Any(a => a.vDestino == vN))
+                {
+                    vN.lAristas.Add(new Arista(vN));
+                    DibujarGrafoCompleto();
+                }
+
+                LimpiarEntradasTexto();
+            });
         }
 
         // Limpia toda la pantalla y resetea datos
@@ -124,8 +202,11 @@ namespace proyectodeloschikis
         // Recorrido BFS usando una cola
         private void BFS_Click(object sender, RoutedEventArgs e)
         {
-            var vI = listaVertices.FirstOrDefault(v => v.nNombre == D_txtO.Text);
-            if (vI == null) return;
+            validacion.EjecutarSeguro(() =>
+            {
+                if (!validacion.EsTextoValido(D_txtO.Text, out string origen)) return;
+                var vI = listaVertices.FirstOrDefault(v => string.Equals(v.nNombre?.Trim(), origen, StringComparison.OrdinalIgnoreCase));
+                if (vI == null) { MessageBox.Show($" Nodo origen '{origen}' no encontrado. No se puede realizar BFS.", "Aviso", MessageBoxButton.OK, MessageBoxImage.Warning); return; }
 
             var vis = new List<Vertice>();
             var col = new Queue<Vertice>();
@@ -141,14 +222,22 @@ namespace proyectodeloschikis
                 }
             }
             MessageBox.Show("Ruta BFS: " + string.Join(" -> ", vis.Select(v => v.nNombre)));
+            });
         }
 
         // Algoritmo Dijkstra para buscar costos
         private void Dijkstra_Click(object sender, RoutedEventArgs e)
         {
-            var vO = listaVertices.FirstOrDefault(v => v.nNombre == D_txtO.Text);
-            var vD = listaVertices.FirstOrDefault(v => v.nNombre == D_txtD.Text);
-            if (vO == null || vD == null) return;
+            validacion.EjecutarSeguro(() =>
+            {
+                if (!validacion.EsTextoValido(D_txtO.Text, out string origen) || !validacion.EsTextoValido(D_txtD.Text, out string destino)) return;
+                var vO = listaVertices.FirstOrDefault(v => string.Equals(v.nNombre?.Trim(), origen, StringComparison.OrdinalIgnoreCase));
+                var vD = listaVertices.FirstOrDefault(v => string.Equals(v.nNombre?.Trim(), destino, StringComparison.OrdinalIgnoreCase));
+                if (vO == null || vD == null)
+                {
+                    MessageBox.Show($" Origen ('{origen}') o destino ('{destino}') no encontrados. Verifica los nombres.", "Aviso", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
 
             var dist = new Dictionary<Vertice, int>();
             var lP = new List<Vertice>(listaVertices);
@@ -170,14 +259,83 @@ namespace proyectodeloschikis
                 }
             }
             MessageBox.Show("Costo total Dijkstra: " + dist[vD]);
+            });
+        }
+
+        // Mostrar matriz de adyacencia en una ventana
+        private void MatrizAdyacencia_Click(object sender, RoutedEventArgs e)
+        {
+            validacion.EjecutarSeguro(() =>
+            {
+                if (listaVertices.Count == 0)
+                {
+                    MessageBox.Show("El grafo está vacío. No hay nodos para mostrar.", "Aviso", MessageBoxButton.OK, MessageBoxImage.Information);
+                    return;
+                }
+
+                int n = listaVertices.Count;
+                var dt = new DataTable();
+                dt.Columns.Add("Nodo", typeof(string));
+                // columnas con nombres de nodos
+                foreach (var v in listaVertices) dt.Columns.Add(v.nNombre, typeof(int));
+
+                for (int i = 0; i < n; i++)
+                {
+                    var row = dt.NewRow();
+                    row["Nodo"] = listaVertices[i].nNombre;
+                    for (int j = 0; j < n; j++)
+                    {
+                        // encuentra si existe arista de i a j
+                        int val = 0;
+                        var a = listaVertices[i].lAristas.FirstOrDefault(ar => string.Equals(ar.vDestino.nNombre, listaVertices[j].nNombre, StringComparison.OrdinalIgnoreCase));
+                        if (a != null) val = a.pPeso;
+                        row[listaVertices[j].nNombre] = val;
+                    }
+                    dt.Rows.Add(row);
+                }
+
+                var win = new MatrizAdyacenciaWindow();
+                win.matrizGrid.ItemsSource = dt.DefaultView;
+                win.Show();
+            });
+        }
+
+        // Mostrar lista de adyacencia en una ventana
+        private void ListaAdyacencia_Click(object sender, RoutedEventArgs e)
+        {
+            validacion.EjecutarSeguro(() =>
+            {
+                if (listaVertices.Count == 0)
+                {
+                    MessageBox.Show("El grafo está vacío. No hay nodos para mostrar.", "Aviso", MessageBoxButton.OK, MessageBoxImage.Information);
+                    return;
+                }
+
+                var datos = new List<(string Nodo, string Vecinos)>();
+                foreach (var v in listaVertices)
+                {
+                    string vecinos = v.lAristas.Count == 0 ? string.Empty : string.Join(", ", v.lAristas.Select(a => a.vDestino.nNombre));
+                    datos.Add((v.nNombre, vecinos));
+                }
+
+                // Preferir la ventana que tiene el DataGrid si existe
+                var win = new ListaAdyacenciaWindow();
+                // Formatea cada entrada como "Nodo: vecino1, vecino2"
+                win.Cargar(datos.Select(d => string.IsNullOrEmpty(d.Vecinos) ? d.Nodo : $"{d.Nodo}: {d.Vecinos}").ToList());
+                win.Show();
+            });
         }
 
         // Metodo para que los nodos no queden uno encima de otro
         private void AcomodarNodosEnCirculo()
         {
             if (listaVertices.Count == 0) return;
-            double cX = canvasGrafo.ActualWidth / 2;
-            double cY = canvasGrafo.ActualHeight / 2;
+
+            // Protecciones: si ActualWidth/Height no estan listos usar valores por defecto
+            double width = canvasGrafo.ActualWidth > 0 ? canvasGrafo.ActualWidth : (double.IsNaN(canvasGrafo.Width) || canvasGrafo.Width == 0 ? 800 : canvasGrafo.Width);
+            double height = canvasGrafo.ActualHeight > 0 ? canvasGrafo.ActualHeight : (double.IsNaN(canvasGrafo.Height) || canvasGrafo.Height == 0 ? 600 : canvasGrafo.Height);
+            double cX = width / 2;
+            double cY = height / 2;
             double rC = 180; // Radio del circulo imaginario
             double aP = 2 * Math.PI / listaVertices.Count;
 
@@ -272,5 +430,66 @@ namespace proyectodeloschikis
         }
 
         private void LimpiarEntradasTexto() { D_txtO.Clear(); D_txtD.Clear(); D_txtNuevoNodo.Clear(); }
+
+        // === ADICIONES POR Copilot ===
+        // DFS (Depth First Search) handler
+        private void DFS_Click(object sender, RoutedEventArgs e)
+        {
+            validacion.EjecutarSeguro(() =>
+            {
+                if (!validacion.EsTextoValido(D_txtO.Text, out string origen)) return;
+                var start = listaVertices.FirstOrDefault(v => string.Equals(v.nNombre?.Trim(), origen, StringComparison.OrdinalIgnoreCase));
+                if (start == null) { MessageBox.Show($"Nodo origen '{origen}' no encontrado.", "Aviso", MessageBoxButton.OK, MessageBoxImage.Warning); return; }
+
+                var visited = new HashSet<Vertice>();
+                var orden = new List<Vertice>();
+
+                void Recur(Vertice v)
+                {
+                    visited.Add(v);
+                    orden.Add(v);
+                    foreach (var a in v.lAristas)
+                    {
+                        if (!visited.Contains(a.vDestino)) Recur(a.vDestino);
+                    }
+                }
+
+                Recur(start);
+                MessageBox.Show("Ruta DFS: " + string.Join(" -> ", orden.Select(v => v.nNombre)));
+            });
+        }
+
+        // Eventos de mouse para seleccionar y arrastrar nodos
+        private void CanvasGrafo_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            // Copilot: selección por cercanía al centro del nodo
+            var p = e.GetPosition(canvasGrafo);
+            selectedVertice = listaVertices.FirstOrDefault(v => Math.Sqrt(Math.Pow(v.pPosicion.X - p.X, 2) + Math.Pow(v.pPosicion.Y - p.Y, 2)) <= radioNodo * 1.5);
+            if (selectedVertice != null)
+            {
+                isDragging = true;
+                lastMousePos = p;
+                canvasGrafo.CaptureMouse();
+            }
+        }
+
+        private void CanvasGrafo_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (!isDragging || selectedVertice == null) return;
+            var p = e.GetPosition(canvasGrafo);
+            // mueve directamente al puntero
+            selectedVertice.pPosicion = p;
+            DibujarGrafoCompleto();
+            lastMousePos = p;
+        }
+
+        private void CanvasGrafo_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (!isDragging) return;
+            isDragging = false;
+            selectedVertice = null;
+            canvasGrafo.ReleaseMouseCapture();
+        }
+        // === FIN ADICIONES POR Copilot ===
     }
 }
