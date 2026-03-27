@@ -35,12 +35,10 @@ namespace proyectodeloschikis
 
     public partial class GrafosView : UserControl
     {
-        // === ADICIONES POR Copilot ===
         // Variables para arrastrar nodos con el mouse
         private Vertice selectedVertice = null;
         private bool isDragging = false;
         private Point lastMousePos;
-        // === FIN ADICIONES POR Copilot ===
 
         // Variables globales del grafo
         private List<Vertice> listaVertices = new List<Vertice>();
@@ -164,7 +162,7 @@ namespace proyectodeloschikis
             });
         }
 
-        // Evento para crear un lazo (apunta a si mismo)
+        // Evento para crear un lazo 
         private void AgregarLazo_Click(object sender, RoutedEventArgs e)
         {
             validacion.EjecutarSeguro(() =>
@@ -320,7 +318,7 @@ namespace proyectodeloschikis
 
                 // Preferir la ventana que tiene el DataGrid si existe
                 var win = new ListaAdyacenciaWindow();
-                // Formatea cada entrada como "Nodo: vecino1, vecino2"
+                // Formatea cada entrada como Nodo
                 win.Cargar(datos.Select(d => string.IsNullOrEmpty(d.Vecinos) ? d.Nodo : $"{d.Nodo}: {d.Vecinos}").ToList());
                 win.Show();
             });
@@ -330,8 +328,6 @@ namespace proyectodeloschikis
         private void AcomodarNodosEnCirculo()
         {
             if (listaVertices.Count == 0) return;
-
-            // Protecciones: si ActualWidth/Height no estan listos usar valores por defecto
             double width = canvasGrafo.ActualWidth > 0 ? canvasGrafo.ActualWidth : (double.IsNaN(canvasGrafo.Width) || canvasGrafo.Width == 0 ? 800 : canvasGrafo.Width);
             double height = canvasGrafo.ActualHeight > 0 ? canvasGrafo.ActualHeight : (double.IsNaN(canvasGrafo.Height) || canvasGrafo.Height == 0 ? 600 : canvasGrafo.Height);
             double cX = width / 2;
@@ -431,8 +427,8 @@ namespace proyectodeloschikis
 
         private void LimpiarEntradasTexto() { D_txtO.Clear(); D_txtD.Clear(); D_txtNuevoNodo.Clear(); }
 
-        // === ADICIONES POR Copilot ===
-        // DFS (Depth First Search) handler
+        // Funcion DFS
+
         private void DFS_Click(object sender, RoutedEventArgs e)
         {
             validacion.EjecutarSeguro(() =>
@@ -462,7 +458,7 @@ namespace proyectodeloschikis
         // Eventos de mouse para seleccionar y arrastrar nodos
         private void CanvasGrafo_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            // Copilot: selección por cercanía al centro del nodo
+            // selección por cercanía al centro del nodo
             var p = e.GetPosition(canvasGrafo);
             selectedVertice = listaVertices.FirstOrDefault(v => Math.Sqrt(Math.Pow(v.pPosicion.X - p.X, 2) + Math.Pow(v.pPosicion.Y - p.Y, 2)) <= radioNodo * 1.5);
             if (selectedVertice != null)
@@ -490,6 +486,5 @@ namespace proyectodeloschikis
             selectedVertice = null;
             canvasGrafo.ReleaseMouseCapture();
         }
-        // === FIN ADICIONES POR Copilot ===
     }
 }

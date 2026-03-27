@@ -87,7 +87,6 @@ namespace proyectodeloschikis
                     txtValor.Clear();
                     return;
                 }
-
                 //  insertar si todo está bien
                 raiz = InsertarRec(raiz, valor);
 
@@ -108,7 +107,7 @@ namespace proyectodeloschikis
             return n;
         }
 
-        // 🔹 ELIMINAR
+        //  ELIMINAR
         private void Eliminar_Click(object sender, RoutedEventArgs e)
         {
             validacion.EjecutarSeguro(() =>
@@ -156,7 +155,7 @@ namespace proyectodeloschikis
             return n;
         }
 
-        // 🔹 BALANCEAR
+        //  BALANCEAR
         private void Balancear_Click(object sender, RoutedEventArgs e)
         {
             if (raiz == null) return;
@@ -190,7 +189,7 @@ namespace proyectodeloschikis
             return n;
         }
 
-        // 🔹 BUSCAR
+        //  BUSCAR
         private void Buscar_Click(object sender, RoutedEventArgs e)
         {
             validacion.EjecutarSeguro(() =>
@@ -227,7 +226,7 @@ namespace proyectodeloschikis
             return c < 0 ? Encontrar(n.Izquierdo, v) : Encontrar(n.Derecho, v);
         }
 
-        // 🔹 NIVEL
+        //  NIVEL
         private void Nivel_Click(object sender, RoutedEventArgs e)
         {
             validacion.EjecutarSeguro(() =>
@@ -267,7 +266,7 @@ namespace proyectodeloschikis
                 : GetNiv(n.Derecho, v, niv + 1);
         }
 
-        // 🔹 ALTURA
+        //  ALTURA
         private void Altura_Click(object sender, RoutedEventArgs e)
         {
             txtResultado.Text = "Altura: " + GetAlt(raiz);
@@ -279,7 +278,7 @@ namespace proyectodeloschikis
             return 1 + Math.Max(GetAlt(n.Izquierdo), GetAlt(n.Derecho));
         }
 
-        // 🔹 MINIMO
+        // MINIMO
         private void Minimo_Click(object sender, RoutedEventArgs e)
         {
             if (raiz == null) return;
@@ -291,7 +290,7 @@ namespace proyectodeloschikis
             txtResultado.Text = "Minimo: " + aux.Valor;
         }
 
-        // 🔹 MAXIMO
+        //  MAXIMO
         private void Maximo_Click(object sender, RoutedEventArgs e)
         {
             if (raiz == null) return;
@@ -303,7 +302,7 @@ namespace proyectodeloschikis
             txtResultado.Text = "Maximo: " + aux.Valor;
         }
 
-        // 🔹 RECORRIDOS
+        // RECORRIDOS
         private void InOrden_Click(object sender, RoutedEventArgs e)
         {
             List<string> l = new List<string>();
@@ -341,7 +340,7 @@ namespace proyectodeloschikis
             l.Add(n.Valor);
         }
 
-        // 🔹 REINICIAR
+        // REINICIAR
         private void Reiniciar_Click(object sender, RoutedEventArgs e)
         {
             raiz = null;
