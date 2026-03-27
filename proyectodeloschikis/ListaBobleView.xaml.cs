@@ -23,10 +23,11 @@ namespace proyectodeloschikis
             listaDatos.ItemsSource = lista;
         }
 
-        // agregar al inicio
+        // 🔹 agregar al inicio
         void AgregarInicio_Click(object sender, RoutedEventArgs e)
-        {          
-            
+        {
+            validacion.EjecutarSeguro(() =>
+            {
                 if (!validacion.EsEntero(txtValor.Text, out int m))
                 {
                     txtValor.Clear();
@@ -35,12 +36,15 @@ namespace proyectodeloschikis
 
                 lista.AddFirst(m);
                 txtValor.Clear();
-                Mostrar();           
+                Mostrar();
+            });
         }
 
-        // agregar al final
+        // 🔹 agregar al final
         void AgregarFinal_Click(object sender, RoutedEventArgs e)
         {
+            validacion.EjecutarSeguro(() =>
+            {
                 if (!validacion.EsEntero(txtValor.Text, out int m))
                 {
                     txtValor.Clear();
@@ -50,9 +54,10 @@ namespace proyectodeloschikis
                 lista.AddLast(m);
                 txtValor.Clear();
                 Mostrar();
+            });
         }
 
-        //eliminar inicio
+        // 🔹 eliminar inicio
         void EliminarInicio_Click(object sender, RoutedEventArgs e)
         {
             if (lista.Count == 0)
@@ -66,7 +71,7 @@ namespace proyectodeloschikis
             Mostrar();
         }
 
-        // eliminar final
+        // 🔹 eliminar final
         void EliminarFinal_Click(object sender, RoutedEventArgs e)
         {
             if (lista.Count == 0)
@@ -80,9 +85,11 @@ namespace proyectodeloschikis
             Mostrar();
         }
 
-        // buscar elemento
+        // 🔹 buscar elemento
         void Buscar_Click(object sender, RoutedEventArgs e)
         {
+            validacion.EjecutarSeguro(() =>
+            {
                 if (lista.Count == 0)
                 {
                     MessageBox.Show("La lista está vacía", "Advertencia",
@@ -104,15 +111,16 @@ namespace proyectodeloschikis
                         MessageBoxButton.OK, MessageBoxImage.Information);
 
                 txtBuscar.Clear();
+            });
         }
 
-        // verificar si la lista está vacía
+        // 🔹 verificar si la lista está vacía
         void EstaVacia_Click(object sender, RoutedEventArgs e)
         {
             txtEstaVacia.Text = lista.Count == 0 ? "Sí" : "No";
         }
 
-        // ordenar ascendente
+        // 🔹 ordenar ascendente
         void Ordenar_Click(object sender, RoutedEventArgs e)
         {
             if (lista.Count == 0)
@@ -133,7 +141,7 @@ namespace proyectodeloschikis
             Mostrar();
         }
 
-        // limpiar lista
+        // 🔹 limpiar lista
         void Limpiar_Click(object sender, RoutedEventArgs e)
         {
             lista.Clear();

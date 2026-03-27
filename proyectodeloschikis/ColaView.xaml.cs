@@ -31,7 +31,8 @@ namespace proyectodeloschikis
         // insertar
         private void btnInsertar_Click(object sender, RoutedEventArgs e)
         {
-
+            validacion.EjecutarSeguro(() =>
+            {
                 // Validar que no esté vacío y recuperar valor limpio
                 if (!validacion.EsTextoValido(txtInsertar.Text, out string valor)) return;
 
@@ -49,6 +50,7 @@ namespace proyectodeloschikis
                 cola.Enqueue(alfaValor);
                 listaDatos.Items.Add(alfaValor);        // Mantenemos el comportamiento original
                 txtInsertar.Clear();
+            });
         }
 
         // quitar
