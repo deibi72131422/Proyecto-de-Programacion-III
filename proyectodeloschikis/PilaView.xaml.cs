@@ -49,8 +49,6 @@ namespace proyectodeloschikis
         // insertar (Push)
         void Push_Click(object sender, RoutedEventArgs e)
         {
-            validacion.EjecutarSeguro(() =>
-            {
                 // Validar que no esté vacía la caja de texto
                 if (string.IsNullOrWhiteSpace(txtPush.Text))
                 {
@@ -73,7 +71,6 @@ namespace proyectodeloschikis
                 pila.Push(m);
                 txtPush.Clear();
                 Mostrar();
-            });
         }
 
         // quitar (Pop)
