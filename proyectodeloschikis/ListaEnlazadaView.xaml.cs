@@ -1,23 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace proyectodeloschikis
 {
-    /// <summary>
-    /// Lógica de interacción para ListaEnlazadaView.xaml
-    /// </summary>
     public partial class ListaEnlazadaView : UserControl
     {
         // lista enlazada
@@ -43,27 +31,43 @@ namespace proyectodeloschikis
         // agregar al inicio
         void AgregarInicio_Click(object sender, RoutedEventArgs e)
         {
-            validacion.EjecutarSeguro(() =>
+            try
             {
-                if (!validacion.EsEntero(txtValor.Text, out int m)) return;
+                if (!int.TryParse(txtValor.Text, out int m))
+                {
+                    MessageBox.Show("Ingrese un número válido");
+                    return;
+                }
 
                 lista.AddFirst(m);
                 Mostrar();
                 txtValor.Clear();
-            });
+            }
+            catch
+            {
+                MessageBox.Show("Error al agregar elemento");
+            }
         }
 
         // agregar al final
         void AgregarFinal_Click(object sender, RoutedEventArgs e)
         {
-            validacion.EjecutarSeguro(() =>
+            try
             {
-                if (!validacion.EsEntero(txtValor.Text, out int m)) return;
+                if (!int.TryParse(txtValor.Text, out int m))
+                {
+                    MessageBox.Show("Ingrese un número válido");
+                    return;
+                }
 
                 lista.AddLast(m);
                 Mostrar();
                 txtValor.Clear();
-            });
+            }
+            catch
+            {
+                MessageBox.Show("Error al agregar elemento");
+            }
         }
 
         // eliminar primer elemento
@@ -97,9 +101,13 @@ namespace proyectodeloschikis
         // buscar elemento
         void Buscar_Click(object sender, RoutedEventArgs e)
         {
-            validacion.EjecutarSeguro(() =>
+            try
             {
-                if (!validacion.EsEntero(txtbucarelemtolista.Text, out int m)) return;
+                if (!int.TryParse(txtbucarelemtolista.Text, out int m))
+                {
+                    MessageBox.Show("Ingrese un número válido");
+                    return;
+                }
 
                 if (lista.Contains(m))
                     MessageBox.Show("Elemento encontrado", "Resultado",
@@ -109,13 +117,20 @@ namespace proyectodeloschikis
                         MessageBoxButton.OK, MessageBoxImage.Information);
 
                 txtbucarelemtolista.Clear();
-            });
+            }
+            catch
+            {
+                MessageBox.Show("Error en la búsqueda");
+            }
         }
 
         // verificar si está vacía
         void EstaVacia_Click(object sender, RoutedEventArgs e)
         {
-            txtVacia.Text = lista.Count == 0 ? "Sí" : "No";
+            if (lista.Count == 0)
+                txtVacia.Text = "Sí";
+            else
+                txtVacia.Text = "No";
         }
 
         // sumar elementos
@@ -143,7 +158,7 @@ namespace proyectodeloschikis
             }
 
             double media = lista.Average();
-            txtMedia.Text = media.ToString("F2");   // 2 decimales para mejor visualización
+            txtMedia.Text = media.ToString("F2");
         }
 
         // encontrar mayor
