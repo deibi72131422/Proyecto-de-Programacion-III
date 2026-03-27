@@ -19,6 +19,16 @@ namespace proyectodeloschikis
             return rbAscendente.IsChecked == true;
         }
 
+        private bool HayDatos()
+        {
+            if (datos.Count == 0)
+            {
+                MessageBox.Show("no hay datos cargados");
+                return false;
+            }
+            return true;
+        }
+
         private void MostrarOriginal()
         {
             listaOriginal.Items.Clear();
@@ -37,10 +47,13 @@ namespace proyectodeloschikis
 
         private void btnCargar_Click(object sender, RoutedEventArgs e)
         {
-            int cantidad = int.Parse(txtCantidad.Text);
+            if (!validacion.EsEntero(txtCantidad.Text, out int cantidad))
+            {
+                txtCantidad.Clear();
+                return;
+            }
 
             Random rnd = new Random();
-
             datos.Clear();
 
             for (int a = 0; a < cantidad; a++)
@@ -51,13 +64,22 @@ namespace proyectodeloschikis
 
         private void btnAgregar_Click(object sender, RoutedEventArgs e)
         {
-            datos.Add(int.Parse(txtNumero.Text));
+            if (!validacion.EsEntero(txtNumero.Text, out int numero))
+            {
+                txtNumero.Clear();
+                return;
+            }
+
+            datos.Add(numero);
+            txtNumero.Clear();
             MostrarOriginal();
         }
 
-        // Burbuja
+        // BURBUJA
         private void btnBurbuja_Click(object sender, RoutedEventArgs e)
         {
+            if (!HayDatos()) return;
+
             List<int> lista = new List<int>(datos);
 
             for (int a = 0; a < lista.Count - 1; a++)
@@ -77,9 +99,11 @@ namespace proyectodeloschikis
             MostrarOrdenado(lista);
         }
 
-        // seleccion
+        // SELECCION
         private void btnSeleccion_Click(object sender, RoutedEventArgs e)
         {
+            if (!HayDatos()) return;
+
             List<int> lista = new List<int>(datos);
 
             for (int a = 0; a < lista.Count; a++)
@@ -90,9 +114,7 @@ namespace proyectodeloschikis
                 {
                     if ((EsAscendente() && lista[m] < lista[pos]) ||
                         (!EsAscendente() && lista[m] > lista[pos]))
-                    {
                         pos = m;
-                    }
                 }
 
                 int t = lista[a];
@@ -103,9 +125,11 @@ namespace proyectodeloschikis
             MostrarOrdenado(lista);
         }
 
-        // insercion
+        // INSERCION
         private void btnInsercion_Click(object sender, RoutedEventArgs e)
         {
+            if (!HayDatos()) return;
+
             List<int> lista = new List<int>(datos);
 
             for (int a = 1; a < lista.Count; a++)
@@ -114,8 +138,8 @@ namespace proyectodeloschikis
                 int m = a - 1;
 
                 while (m >= 0 &&
-                       ((EsAscendente() && lista[m] > aux) ||
-                       (!EsAscendente() && lista[m] < aux)))
+                    ((EsAscendente() && lista[m] > aux) ||
+                    (!EsAscendente() && lista[m] < aux)))
                 {
                     lista[m + 1] = lista[m];
                     m--;
@@ -127,13 +151,13 @@ namespace proyectodeloschikis
             MostrarOrdenado(lista);
         }
 
-        // Quick sort
+        // QUICK SORT
         private void btnQuick_Click(object sender, RoutedEventArgs e)
         {
+            if (!HayDatos()) return;
+
             List<int> lista = new List<int>(datos);
-
             QuickSort(lista, 0, lista.Count - 1);
-
             MostrarOrdenado(lista);
         }
 
@@ -150,16 +174,15 @@ namespace proyectodeloschikis
                     (!EsAscendente() && lista[m] > pivote))
                 {
                     a++;
-
                     int t = lista[a];
                     lista[a] = lista[m];
                     lista[m] = t;
                 }
             }
 
-            int t2 = lista[a + 1];
+            int temp = lista[a + 1];
             lista[a + 1] = lista[fin];
-            lista[fin] = t2;
+            lista[fin] = temp;
 
             int pos = a + 1;
 
@@ -167,9 +190,11 @@ namespace proyectodeloschikis
             QuickSort(lista, pos + 1, fin);
         }
 
-        // merge sort
+        // MERGE
         private void btnMerge_Click(object sender, RoutedEventArgs e)
         {
+            if (!HayDatos()) return;
+
             List<int> lista = MergeSort(new List<int>(datos));
             MostrarOrdenado(lista);
         }
@@ -181,8 +206,8 @@ namespace proyectodeloschikis
 
             int medio = lista.Count / 2;
 
-            var izq = MergeSort(lista.GetRange(0, medio));
-            var der = MergeSort(lista.GetRange(medio, lista.Count - medio));
+            List<int> izq = MergeSort(lista.GetRange(0, medio));
+            List<int> der = MergeSort(lista.GetRange(medio, lista.Count - medio));
 
             return Merge(izq, der);
         }
@@ -212,35 +237,103 @@ namespace proyectodeloschikis
             return res;
         }
 
-        // radix sort
+        // RADIX
         private void btnRadix_Click(object sender, RoutedEventArgs e)
         {
+            if (!HayDatos()) return;
+
             List<int> lista = new List<int>(datos);
 
-            if (EsAscendente())
-                lista.Sort();
-            else
-                lista.Sort((x, y) => y.CompareTo(x));
+            int max = lista[0];
+            foreach (int x in lista)
+                if (x > max) max = x;
+
+            for (int exp = 1; max / exp > 0; exp *= 10)
+                CountingSort(lista, exp);
+
+            if (!EsAscendente())
+                lista.Reverse();
 
             MostrarOrdenado(lista);
         }
 
-        // bucket sort
+        private void CountingSort(List<int> lista, int exp)
+        {
+            int n = lista.Count;
+            int[] salida = new int[n];
+            int[] conteo = new int[10];
+
+            for (int a = 0; a < n; a++)
+                conteo[(lista[a] / exp) % 10]++;
+
+            for (int a = 1; a < 10; a++)
+                conteo[a] += conteo[a - 1];
+
+            for (int a = n - 1; a >= 0; a--)
+            {
+                salida[conteo[(lista[a] / exp) % 10] - 1] = lista[a];
+                conteo[(lista[a] / exp) % 10]--;
+            }
+
+            for (int a = 0; a < n; a++)
+                lista[a] = salida[a];
+        }
+
+        // BUCKET
         private void btnBucket_Click(object sender, RoutedEventArgs e)
         {
+            if (!HayDatos()) return;
+
             List<int> lista = new List<int>(datos);
 
-            if (EsAscendente())
-                lista.Sort();
-            else
-                lista.Sort((x, y) => y.CompareTo(x));
+            int max = lista[0];
+            foreach (int x in lista)
+                if (x > max) max = x;
+
+            List<int>[] buckets = new List<int>[10];
+
+            for (int a = 0; a < 10; a++)
+                buckets[a] = new List<int>();
+
+            foreach (int x in lista)
+            {
+                int index = x * 10 / (max + 1);
+                buckets[index].Add(x);
+            }
+
+            lista.Clear();
+
+            foreach (List<int> bucket in buckets)
+            {
+                for (int a = 1; a < bucket.Count; a++)
+                {
+                    int key = bucket[a];
+                    int m = a - 1;
+
+                    while (m >= 0 && bucket[m] > key)
+                    {
+                        bucket[m + 1] = bucket[m];
+                        m--;
+                    }
+
+                    bucket[m + 1] = key;
+                }
+
+                foreach (int x in bucket)
+                    lista.Add(x);
+            }
+
+            if (!EsAscendente())
+                lista.Reverse();
 
             MostrarOrdenado(lista);
         }
 
-        // shell sort
+        // SHELL
         private void btnShell_Click(object sender, RoutedEventArgs e)
         {
+            if (!HayDatos()) return;
+
             List<int> lista = new List<int>(datos);
 
             int salto = lista.Count / 2;
@@ -269,46 +362,98 @@ namespace proyectodeloschikis
             MostrarOrdenado(lista);
         }
 
-        // heap sort
+        // HEAP
         private void btnHeap_Click(object sender, RoutedEventArgs e)
         {
+            if (!HayDatos()) return;
+
             List<int> lista = new List<int>(datos);
 
-            if (EsAscendente())
-                lista.Sort();
-            else
-                lista.Sort((x, y) => y.CompareTo(x));
+            int n = lista.Count;
+
+            for (int a = n / 2 - 1; a >= 0; a--)
+                Heapify(lista, n, a);
+
+            for (int a = n - 1; a >= 0; a--)
+            {
+                int temp = lista[0];
+                lista[0] = lista[a];
+                lista[a] = temp;
+
+                Heapify(lista, a, 0);
+            }
+
+            if (!EsAscendente())
+                lista.Reverse();
 
             MostrarOrdenado(lista);
         }
 
-        // busqueda secuencial
+        private void Heapify(List<int> lista, int n, int i)
+        {
+            int mayor = i;
+            int izq = 2 * i + 1;
+            int der = 2 * i + 2;
+
+            if (izq < n && lista[izq] > lista[mayor])
+                mayor = izq;
+
+            if (der < n && lista[der] > lista[mayor])
+                mayor = der;
+
+            if (mayor != i)
+            {
+                int temp = lista[i];
+                lista[i] = lista[mayor];
+                lista[mayor] = temp;
+
+                Heapify(lista, n, mayor);
+            }
+        }
+        // BUSQUEDA SECUENCIAL
         private void btnSecuencial_Click(object sender, RoutedEventArgs e)
         {
-            int valor = int.Parse(txtBuscar.Text);
-
-            for (int a = 0; a < datos.Count; a++)
+            if (!validacion.EsEntero(txtBuscar.Text, out int valor))
             {
-                if (datos[a] == valor)
+                txtBuscar.Clear();
+                return;
+            }
+
+            int posicion = -1;
+
+            for (int i = 0; i < datos.Count; i++)
+            {
+                if (datos[i] == valor)
                 {
-                    txtResultado.Text = "Posición: " + a;
-                    return;
+                    posicion = i;
+                    break;
                 }
             }
 
-            txtResultado.Text = "No encontrado";
+            if (posicion == -1)
+                txtResultado.Text = "No encontrado";
+            else
+                txtResultado.Text = "Encontrado en posición: " + posicion;
         }
 
-        // busqueda binaria
+
+        // BUSQUEDA BINARIA
         private void btnBinaria_Click(object sender, RoutedEventArgs e)
         {
-            int valor = int.Parse(txtBuscar.Text);
+            if (!validacion.EsEntero(txtBuscar.Text, out int valor))
+            {
+                txtBuscar.Clear();
+                return;
+            }
 
             List<int> lista = new List<int>(datos);
+
+            // ordenar primero
             lista.Sort();
 
             int inicio = 0;
             int fin = lista.Count - 1;
+            int pos = -1;
 
             while (inicio <= fin)
             {
@@ -316,17 +461,20 @@ namespace proyectodeloschikis
 
                 if (lista[medio] == valor)
                 {
-                    txtResultado.Text = "Posición: " + medio;
-                    return;
+                    pos = medio;
+                    break;
                 }
 
-                if (valor < lista[medio])
-                    fin = medio - 1;
-                else
+                if (lista[medio] < valor)
                     inicio = medio + 1;
+                else
+                    fin = medio - 1;
             }
 
-            txtResultado.Text = "No encontrado";
+            if (pos == -1)
+                txtResultado.Text = "No encontrado";
+            else
+                txtResultado.Text = "Encontrado en posición: " + pos;
         }
 
         private void btnLimpiarOrdenado_Click(object sender, RoutedEventArgs e)
