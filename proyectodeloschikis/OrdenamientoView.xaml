@@ -16,46 +16,46 @@
         <StackPanel Grid.Column="0" Margin="10">
 
             <TextBlock Text="Generar Datos"
-                       Foreground="#C084FC"
-                       FontSize="18"
-                       Margin="0,0,0,10"/>
+                    Foreground="#C084FC"
+                    FontSize="18"
+                    Margin="0,0,0,10"/>
 
             <TextBlock Text="Generar aleatoriamente"
-                       Foreground="#C084FC"
-                       Margin="0,15,0,5"/>
+                    Foreground="#C084FC"
+                    Margin="0,15,0,5"/>
 
             <StackPanel Orientation="Horizontal">
 
                 <TextBox x:Name="txtCantidad"
-                         Width="100"
-                         Height="35"
-                         Background="#1A1A2E"
-                         Foreground="White"
-                         BorderBrush="#C084FC"
-                         FontSize="18"/>
+                      Width="100"
+                      Height="35"
+                      Background="#1A1A2E"
+                      Foreground="White"
+                      BorderBrush="#C084FC"
+                      FontSize="18"/>
 
                 <Button Content="Generar"
-                        Style="{StaticResource MenuButton}"
-                        Click="btnCargar_Click"/>
+                     Style="{StaticResource MenuButton}"
+                     Click="btnCargar_Click"/>
             </StackPanel>
 
             <TextBlock Text="Agregar número o letra"
-                       Foreground="#C084FC"
-                       Margin="0,15,0,5"/>
+                    Foreground="#C084FC"
+                    Margin="0,15,0,5"/>
 
             <StackPanel Orientation="Horizontal">
 
                 <TextBox x:Name="txtNumero"
-                         Width="100"
-                         Height="35"
-                         Background="#1A1A2E"
-                         Foreground="White"
-                         BorderBrush="#C084FC"
-                         FontSize="18"/>
+                      Width="100"
+                      Height="35"
+                      Background="#1A1A2E"
+                      Foreground="White"
+                      BorderBrush="#C084FC"
+                      FontSize="18"/>
 
                 <Button Content="Agregar"
-                        Style="{StaticResource MenuButton}"
-                        Click="btnAgregar_Click"/>
+                     Style="{StaticResource MenuButton}"
+                     Click="btnAgregar_Click"/>
             </StackPanel>
 
             <Grid Margin="0,20,0,0">
@@ -67,145 +67,124 @@
 
                 <StackPanel Grid.Column="0">
                     <TextBlock Text="Vector Original"
-                               Foreground="White"
-                               Margin="5"/>
+                            Foreground="White"
+                            Margin="5"/>
 
                     <ListBox x:Name="listaOriginal"
-                             Height="200"
-                             Background="#1A1A2E"
-                             Foreground="White"
-                             BorderBrush="#C084FC"/>
+                          Height="200"
+                          Background="#1A1A2E"
+                          Foreground="White"
+                          BorderBrush="#C084FC"/>
                 </StackPanel>
 
                 <StackPanel Grid.Column="1">
                     <TextBlock Text="Vector Ordenado"
-                               Foreground="White"
-                               Margin="5"/>
+                            Foreground="White"
+                            Margin="5"/>
 
                     <ListBox x:Name="listaOrdenado"
-                             Height="200"
-                             Background="#1A1A2E"
-                             Foreground="White"
-                             BorderBrush="#C084FC"/>
+                          Height="200"
+                          Background="#1A1A2E"
+                          Foreground="White"
+                          BorderBrush="#C084FC"/>
                 </StackPanel>
 
             </Grid>
 
             <Button Content="Limpiar Vector Ordenado"
-                    Style="{StaticResource MenuButton}"
-                    Click="btnLimpiarOrdenado_Click"
-                    Margin="0,10,0,0"/>
+                 Style="{StaticResource MenuButton}"
+                 Click="btnLimpiarOrdenado_Click"
+                 Margin="0,10,0,0"/>
 
             <Button Content="Limpiar Todo"
-                    Style="{StaticResource MenuButton}"
-                    Click="btnLimpiarTodo_Click"/>
+                 Style="{StaticResource MenuButton}"
+                 Click="btnLimpiarTodo_Click"/>
 
         </StackPanel>
 
         <StackPanel Grid.Column="1" Margin="10">
 
             <TextBlock Text="Algoritmos de Ordenamiento"
-                       Foreground="#C084FC"
-                       FontSize="18"
-                       Margin="0,0,0,10"/>
+                    Foreground="#C084FC"
+                    FontSize="18"
+                    Margin="0,0,0,10"/>
 
             <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                <RadioButton Content="Ascendente" Foreground="White" Margin="10,0"/>
-                <RadioButton Content="Descendente" Foreground="White" Margin="10,0"/>
+                <RadioButton x:Name="rbAscendente" Content="Ascendente" Foreground="White" Margin="10,0"/>
+                <RadioButton x:Name="rbDescendente" Content="Descendente" Foreground="White" Margin="10,0"/>
             </StackPanel>
 
             <WrapPanel>
 
                 <Button Content="Selección"
-                        Style="{StaticResource MenuButton}"
-                        Click="btnSeleccion_Click"/>
+                     Style="{StaticResource MenuButton}"
+                     Click="btnSeleccion_Click"/>
 
                 <Button Content="Inserción"
-                        Style="{StaticResource MenuButton}"
-                        Click="btnInsercion_Click"/>
+                     Style="{StaticResource MenuButton}"
+                     Click="btnInsercion_Click"/>
 
                 <Button Content="Bubble Sort"
-                        Style="{StaticResource MenuButton}"
-                        Click="btnBurbuja_Click"/>
+                     Style="{StaticResource MenuButton}"
+                     Click="btnBurbuja_Click"/>
 
                 <Button Content="Quick Sort"
-                        Style="{StaticResource MenuButton}"
-                        Click="btnQuick_Click"/>
+                     Style="{StaticResource MenuButton}"
+                     Click="btnQuick_Click"/>
 
                 <Button Content="Merge Sort"
-                        Style="{StaticResource MenuButton}"
-                        Click="btnMerge_Click"/>
+                     Style="{StaticResource MenuButton}"
+                     Click="btnMerge_Click"/>
 
                 <Button Content="Radix Sort"
-                        Style="{StaticResource MenuButton}"
-                        Click="btnRadix_Click"/>
+                     Style="{StaticResource MenuButton}"
+                     Click="btnRadix_Click"/>
 
                 <Button Content="Bucket Sort"
-                        Style="{StaticResource MenuButton}"
-                        Click="btnBucket_Click"/>
+                     Style="{StaticResource MenuButton}"
+                     Click="btnBucket_Click"/>
 
                 <Button Content="Shell Sort"
-                        Style="{StaticResource MenuButton}"
-                        Click="btnShell_Click"/>
+                     Style="{StaticResource MenuButton}"
+                     Click="btnShell_Click"/>
 
                 <Button Content="Heap Sort"
-                        Style="{StaticResource MenuButton}"
-                        Click="btnHeap_Click"/>
+                     Style="{StaticResource MenuButton}"
+                     Click="btnHeap_Click"/>
 
             </WrapPanel>
 
-            <TextBlock Text="Lista ordenada por:"
-                       Foreground="White"
-                       Margin="0,15,0,5"/>
 
-            <TextBox x:Name="txtMetodoOrden"
-                     IsReadOnly="True"
-                     Background="#1A1A2E"
-                     Foreground="#C084FC"
-                     BorderBrush="#C084FC"
-                     Height="35"
-                     FontSize="18"/>
 
             <TextBlock Text="Algoritmos de Búsqueda"
-                       Foreground="#C084FC"
-                       FontSize="18"
-                       Margin="20,20,0,10"/>
+                    Foreground="#C084FC"
+                    FontSize="18"
+                    Margin="20,20,0,10"/>
 
             <TextBox x:Name="txtBuscar"
-                     Height="35"
-                     Margin="0,0,0,10"
-                     Background="#1A1A2E"
-                     Foreground="White"
-                     BorderBrush="#C084FC"
-                     FontSize="18"/>
+                  Height="35"
+                  Margin="0,0,0,10"
+                  Background="#1A1A2E"
+                  Foreground="White"
+                  BorderBrush="#C084FC"
+                  FontSize="18"/>
 
             <StackPanel Orientation="Horizontal">
 
                 <Button Content="Búsqueda Secuencial"
-                        Style="{StaticResource MenuButton}"
-                        Click="btnSecuencial_Click"/>
+                     Style="{StaticResource MenuButton}"
+                     Click="btnSecuencial_Click"/>
 
                 <Button Content="Búsqueda Binaria"
-                        Style="{StaticResource MenuButton}"
-                        Click="btnBinaria_Click"/>
+                     Style="{StaticResource MenuButton}"
+                     Click="btnBinaria_Click"/>
 
             </StackPanel>
 
-            <TextBlock Text="Elemento buscado por:"
-                       Foreground="White"
-                       Margin="15,15,0,5"/>
-
-            <TextBox x:Name="txtMetodoBusqueda"
-                     IsReadOnly="True"
-                     Background="#1A1A2E"
-                     Foreground="#C084FC"
-                     BorderBrush="#C084FC"
-                     Height="35"
-                     FontSize="18"/>
 
             <TextBlock x:Name="txtResultado"
-                       Foreground="White"
-                       Margin="10"/>
+                    Foreground="White"
+                    Margin="10"/>
 
         </StackPanel>
 

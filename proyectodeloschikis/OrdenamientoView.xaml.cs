@@ -16,7 +16,7 @@ namespace proyectodeloschikis
 
         private bool EsAscendente()
         {
-            return true;
+            return rbAscendente.IsChecked == true;
         }
 
         private void MostrarOriginal()
@@ -55,7 +55,7 @@ namespace proyectodeloschikis
             MostrarOriginal();
         }
 
-        // bubble sort
+        // Burbuja
         private void btnBurbuja_Click(object sender, RoutedEventArgs e)
         {
             List<int> lista = new List<int>(datos);
@@ -64,7 +64,8 @@ namespace proyectodeloschikis
             {
                 for (int m = 0; m < lista.Count - 1; m++)
                 {
-                    if (lista[m] > lista[m + 1])
+                    if ((EsAscendente() && lista[m] > lista[m + 1]) ||
+                        (!EsAscendente() && lista[m] < lista[m + 1]))
                     {
                         int t = lista[m];
                         lista[m] = lista[m + 1];
@@ -87,8 +88,11 @@ namespace proyectodeloschikis
 
                 for (int m = a + 1; m < lista.Count; m++)
                 {
-                    if (lista[m] < lista[pos])
+                    if ((EsAscendente() && lista[m] < lista[pos]) ||
+                        (!EsAscendente() && lista[m] > lista[pos]))
+                    {
                         pos = m;
+                    }
                 }
 
                 int t = lista[a];
@@ -109,7 +113,9 @@ namespace proyectodeloschikis
                 int aux = lista[a];
                 int m = a - 1;
 
-                while (m >= 0 && lista[m] > aux)
+                while (m >= 0 &&
+                       ((EsAscendente() && lista[m] > aux) ||
+                       (!EsAscendente() && lista[m] < aux)))
                 {
                     lista[m + 1] = lista[m];
                     m--;
@@ -121,7 +127,7 @@ namespace proyectodeloschikis
             MostrarOrdenado(lista);
         }
 
-        // quick sort
+        // Quick sort
         private void btnQuick_Click(object sender, RoutedEventArgs e)
         {
             List<int> lista = new List<int>(datos);
@@ -140,7 +146,8 @@ namespace proyectodeloschikis
 
             for (int m = inicio; m < fin; m++)
             {
-                if (lista[m] < pivote)
+                if ((EsAscendente() && lista[m] < pivote) ||
+                    (!EsAscendente() && lista[m] > pivote))
                 {
                     a++;
 
@@ -186,7 +193,8 @@ namespace proyectodeloschikis
 
             while (a.Count > 0 && b.Count > 0)
             {
-                if (a[0] < b[0])
+                if ((EsAscendente() && a[0] < b[0]) ||
+                    (!EsAscendente() && a[0] > b[0]))
                 {
                     res.Add(a[0]);
                     a.RemoveAt(0);
@@ -209,7 +217,10 @@ namespace proyectodeloschikis
         {
             List<int> lista = new List<int>(datos);
 
-            lista.Sort();
+            if (EsAscendente())
+                lista.Sort();
+            else
+                lista.Sort((x, y) => y.CompareTo(x));
 
             MostrarOrdenado(lista);
         }
@@ -219,7 +230,10 @@ namespace proyectodeloschikis
         {
             List<int> lista = new List<int>(datos);
 
-            lista.Sort();
+            if (EsAscendente())
+                lista.Sort();
+            else
+                lista.Sort((x, y) => y.CompareTo(x));
 
             MostrarOrdenado(lista);
         }
@@ -238,7 +252,9 @@ namespace proyectodeloschikis
                     int temp = lista[a];
                     int m = a;
 
-                    while (m >= salto && lista[m - salto] > temp)
+                    while (m >= salto &&
+                        ((EsAscendente() && lista[m - salto] > temp) ||
+                        (!EsAscendente() && lista[m - salto] < temp)))
                     {
                         lista[m] = lista[m - salto];
                         m -= salto;
@@ -258,7 +274,10 @@ namespace proyectodeloschikis
         {
             List<int> lista = new List<int>(datos);
 
-            lista.Sort();
+            if (EsAscendente())
+                lista.Sort();
+            else
+                lista.Sort((x, y) => y.CompareTo(x));
 
             MostrarOrdenado(lista);
         }
@@ -286,7 +305,6 @@ namespace proyectodeloschikis
             int valor = int.Parse(txtBuscar.Text);
 
             List<int> lista = new List<int>(datos);
-
             lista.Sort();
 
             int inicio = 0;
