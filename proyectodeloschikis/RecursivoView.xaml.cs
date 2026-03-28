@@ -22,6 +22,8 @@ namespace proyectodeloschikis
     {
         private int ejercicioActual = 0;
         private List<int> vectorActual = new List<int>();
+        private Dictionary<int, long> memo = new Dictionary<int, long>();
+
 
         public RecursivoView()
         {
@@ -88,105 +90,158 @@ namespace proyectodeloschikis
         // Actualiza la lista visual cuando escribes en txtVector
         private void txtVector_TextChanged(object sender, TextChangedEventArgs e)
         {
+            vectorActual.Clear();
+
             if (string.IsNullOrWhiteSpace(txtVector.Text))
             {
                 lstVectorVisual.ItemsSource = null;
-                vectorActual.Clear();
                 return;
             }
 
-            try
-            {
-                vectorActual = txtVector.Text.Split(',')
-                    .Select(x => int.Parse(x.Trim()))
-                    .ToList();
+            string[] partes = txtVector.Text.Split(',');
 
-                lstVectorVisual.ItemsSource = vectorActual;
-            }
-            catch
+            for (int i = 0; i < partes.Length; i++)
             {
-                // Si hay error de formato, no actualiza la lista
+                string p = partes[i].Trim();
+
+                //  IGNORAR último vacío (cuando escriben "1,")
+                if (string.IsNullOrEmpty(p))
+                {
+                    if (i == partes.Length - 1)
+                        continue; //  PERMITIR mientras escribe
+
+                    validacion.Error("Vector inválido (solo números separados por coma)");
+                    lstVectorVisual.ItemsSource = null;
+                    vectorActual.Clear();
+                    return;
+                }
+
+                if (!int.TryParse(p, out int num))
+                {
+                    validacion.Error("Vector inválido (solo números separados por coma)");
+                    lstVectorVisual.ItemsSource = null;
+                    vectorActual.Clear();
+                    return;
+                }
+
+                vectorActual.Add(num);
             }
+
+            // 🔴 límite de tamaño
+            if (vectorActual.Count > 1000)
+            {
+                validacion.Error("Vector demasiado grande");
+                vectorActual.Clear();
+                lstVectorVisual.ItemsSource = null;
+                return;
+            }
+
+            lstVectorVisual.ItemsSource = null;
+            lstVectorVisual.ItemsSource = vectorActual;
         }
 
         // ====================== BOTÓN CALCULAR ======================
         private void BtnCalcular_Click(object sender, RoutedEventArgs e)
         {
-            txtResultado.Text = "Resultado: ";
-
-            try
+            validacion.EjecutarSeguro(() =>
             {
+                memo.Clear();
+                txtResultado.Text = "Resultado: ";
+
+                // 🔴 Validar que haya ejercicio
+                if (ejercicioActual == 0)
+                {
+                    validacion.Error("Seleccione un ejercicio");
+                    return;
+                }
+
                 switch (ejercicioActual)
                 {
                     case 1: // Capicúa
-                        if (int.TryParse(txtInput.Text, out int numCap))
-                            txtResultado.Text = $"Resultado: {(EsCapicua(numCap) ? "Sí es capicúa" : "No es capicúa")}";
+                        if (!validacion.EsEntero(txtInput.Text, out int numCap)) return;
+                        txtResultado.Text = $"Resultado: {(EsCapicua(numCap) ? "Sí es capicúa" : "No es capicúa")}";
                         break;
 
                     case 2: // Suma Vector
-                        if (vectorActual.Count > 0)
-                            txtResultado.Text = $"Resultado: {SumaVector(vectorActual, 0)}";
+                        if (vectorActual.Count == 0)
+                        {
+                            validacion.Error("Ingrese un vector válido");
+                            return;
+                        }
+                        txtResultado.Text = $"Resultado: {SumaVector(vectorActual, 0)}";
                         break;
 
                     case 3: // Producto Vector
-                        if (vectorActual.Count > 0)
-                            txtResultado.Text = $"Resultado: {ProductoVector(vectorActual, 0)}";
+                        if (vectorActual.Count == 0)
+                        {
+                            validacion.Error("Ingrese un vector válido");
+                            return;
+                        }
+                        txtResultado.Text = $"Resultado: {ProductoVector(vectorActual, 0)}";
                         break;
 
                     case 4: // Menor Vector
-                        if (vectorActual.Count > 0)
-                            txtResultado.Text = $"Resultado: {MenorVector(vectorActual, 0)}";
+                        if (vectorActual.Count == 0)
+                        {
+                            validacion.Error("Ingrese un vector válido");
+                            return;
+                        }
+                        txtResultado.Text = $"Resultado: {MenorVector(vectorActual, 0)}";
                         break;
 
                     case 5: // Mayor Vector
-                        if (vectorActual.Count > 0)
-                            txtResultado.Text = $"Resultado: {MayorVector(vectorActual, 0)}";
+                        if (vectorActual.Count == 0)
+                        {
+                            validacion.Error("Ingrese un vector válido");
+                            return;
+                        }
+                        txtResultado.Text = $"Resultado: {MayorVector(vectorActual, 0)}";
                         break;
 
                     case 6: // Factorial
-                        if (int.TryParse(txtInput.Text, out int nFact) && nFact >= 0)
-                            txtResultado.Text = $"Resultado: {Factorial(nFact)}";
+                        if (!validacion.EsEntero(txtInput.Text, out int nFact)) return;
+                        if (!validacion.EnRango(nFact, 0, 20)) return;
+                        txtResultado.Text = $"Resultado: {Factorial(nFact)}";
                         break;
 
                     case 7: // Fibonacci
-                        if (int.TryParse(txtInput.Text, out int nFib) && nFib >= 0)
-                            txtResultado.Text = $"Resultado: {Fibonacci(nFib)}";
+                        if (!validacion.EsEntero(txtInput.Text, out int nFib)) return;
+                        if (!validacion.EnRango(nFib, 0, 50)) return;
+                        txtResultado.Text = $"Resultado: {Fibonacci(nFib)}";
                         break;
 
                     case 8: // Invertir Número
-                        if (int.TryParse(txtInput.Text, out int nInv))
-                            txtResultado.Text = $"Resultado: {InvertirNumero(nInv)}";
+                        if (!validacion.EsEntero(txtInput.Text, out int nInv)) return;
+                        txtResultado.Text = $"Resultado: {InvertirNumero(nInv)}";
                         break;
 
                     case 9: // Suma de Dígitos
-                        if (int.TryParse(txtInput.Text, out int nDig))
-                            txtResultado.Text = $"Resultado: {SumaDigitos(nDig)}";
+                        if (!validacion.EsEntero(txtInput.Text, out int nDig)) return;
+                        txtResultado.Text = $"Resultado: {SumaDigitos(Math.Abs(nDig))}";
                         break;
 
                     case 10: // Suma 1 hasta N
-                        if (int.TryParse(txtInput.Text, out int nSum))
-                            txtResultado.Text = $"Resultado: {Suma1HastaN(nSum)}";
+                        if (!validacion.EsEntero(txtInput.Text, out int nSum)) return;
+                        if (nSum < 0)
+                        {
+                            validacion.Error("Debe ser positivo");
+                            return;
+                        }
+                        txtResultado.Text = $"Resultado: {Suma1HastaN(nSum)}";
                         break;
 
                     case 11: // Par o Impar
-                        if (int.TryParse(txtInput.Text, out int nPar))
-                            txtResultado.Text = $"Resultado: {(EsPar(nPar) ? "Par" : "Impar")}";
+                        if (!validacion.EsEntero(txtInput.Text, out int nPar)) return;
+                        nPar = Math.Abs(nPar); // 🔴 FIX
+                        txtResultado.Text = $"Resultado: {(EsPar(nPar) ? "Par" : "Impar")}";
                         break;
 
                     case 12: // Positivo o Negativo
-                        if (int.TryParse(txtInput.Text, out int nPos))
-                            txtResultado.Text = $"Resultado: {(nPos > 0 ? "Positivo" : nPos < 0 ? "Negativo" : "Cero")}";
-                        break;
-
-                    default:
-                        txtResultado.Text = "Resultado: Selecciona un ejercicio primero";
+                        if (!validacion.EsEntero(txtInput.Text, out int nPos)) return;
+                        txtResultado.Text = $"Resultado: {(nPos > 0 ? "Positivo" : nPos < 0 ? "Negativo" : "Cero")}";
                         break;
                 }
-            }
-            catch (Exception ex)
-            {
-                txtResultado.Text = $"Resultado: Error → {ex.Message}";
-            }
+            });
         }
 
         // ====================== FUNCIONES RECURSIVAS ======================
@@ -214,7 +269,11 @@ namespace proyectodeloschikis
         private long ProductoVector(List<int> vec, int i)
         {
             if (i == vec.Count) return 1;
-            return vec[i] * ProductoVector(vec, i + 1);
+
+            checked // detecta overflow automáticamente
+            {
+                return vec[i] * ProductoVector(vec, i + 1);
+            }
         }
 
         // 4. Menor Vector
@@ -243,8 +302,29 @@ namespace proyectodeloschikis
         // 7. Fibonacci
         private long Fibonacci(int n)
         {
+            //  Validación de rango (evita abuso)
+            if (n > 50)
+            {
+                validacion.Error("Número demasiado grande");
+                return 0;
+            }
+
+            //  Validación negativa (MUY importante)
+            if (n < 0)
+            {
+                validacion.Error("No se permiten negativos");
+                return 0;
+            }
+
+            //  Caso base
             if (n <= 1) return n;
-            return Fibonacci(n - 1) + Fibonacci(n - 2);
+
+            //  Memoización
+            if (memo.ContainsKey(n))
+                return memo[n];
+
+            memo[n] = Fibonacci(n - 1) + Fibonacci(n - 2);
+            return memo[n];
         }
 
         // 8. Invertir Número
@@ -263,16 +343,32 @@ namespace proyectodeloschikis
         // 10. Suma 1 hasta N
         private int Suma1HastaN(int n)
         {
+            if (n > 5000)
+            {
+                validacion.Error("Número demasiado grande");
+                return 0;
+            }
+
             if (n <= 0) return 0;
+
             return n + Suma1HastaN(n - 1);
         }
 
         // 11. Par o Impar (recursivo simple)
         private bool EsPar(int n)
         {
+            n = Math.Abs(n);
+
+            if (n > 10000)
+            {
+                validacion.Error("Número demasiado grande");
+                return false;
+            }
+
             if (n == 0) return true;
             if (n == 1) return false;
-            return EsPar(n - 2);   // o n + 2 si es negativo, pero asumimos positivo
+
+            return EsPar(n - 2);
         }
     }
 }

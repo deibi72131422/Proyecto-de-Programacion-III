@@ -29,6 +29,7 @@ namespace proyectodeloschikis
         public UcHanoi()
         {
             InitializeComponent();
+            sliderVelocidad.ValueChanged += SliderVelocidad_ValueChanged;
             torres.Add(new Stack<Rectangle>()); // Torre A (0)
             torres.Add(new Stack<Rectangle>()); // Torre B (1)
             torres.Add(new Stack<Rectangle>()); // Torre C (2)
@@ -50,7 +51,11 @@ namespace proyectodeloschikis
             await HanoiRecursivo(numDiscos, 0, 2, 1);   // Mover de A(0) a C(2) usando B(1)
             resolviendo = false;
         }
-
+        private void SliderVelocidad_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (txtVelocidad != null)
+                txtVelocidad.Text = ((int)sliderVelocidad.Value) + " ms";
+        }
         private void IniciarTorres()
         {
             // Limpiar todo
@@ -126,7 +131,7 @@ namespace proyectodeloschikis
             double nuevaY = 280 - torres[hacia].Count * alturaDisco - 10;
             double nuevaX = (180 - disco.Width) / 2;
 
-            // 🔥 TELETRANSPORTE DIRECTO
+            // TELETRANSPORTE DIRECTO
             Canvas.SetLeft(disco, nuevaX);
             Canvas.SetTop(disco, nuevaY);
 
@@ -136,7 +141,7 @@ namespace proyectodeloschikis
             txtContador.Text = "Movimientos: " + contadorMovimientos;
             lstMovimientos.ScrollIntoView(lstMovimientos.Items[lstMovimientos.Items.Count - 1]);
 
-            await Task.Delay(200); // opcional (para que se vea el proceso)
+            await Task.Delay((int)sliderVelocidad.Value); 
         }
     }
 }

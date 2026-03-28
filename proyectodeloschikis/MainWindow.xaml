@@ -45,6 +45,7 @@
                         <Button Style="{StaticResource MenuButton}" Content="Listas Doble" Click="LidstasDoblementeEnlazadas_Click"/>
                         <Button Style="{StaticResource MenuButton}" Content="Colas" Click="Colas_Click"/>
                         <Button Style="{StaticResource MenuButton}" Content="Pilas" Click="Pilas_Click"/>
+                        <Button Style="{StaticResource MenuButton}" Content="Calculadora (Pilas)" Click="Calculadora_Click"/>
                     </StackPanel>
 
 
@@ -60,7 +61,7 @@
                     </StackPanel>
 
 
-                    <Button Style="{StaticResource MenuButton}" Content="Calculadora (Pilas)" Click="Calculadora_Click"/>
+                    
                     <Button Style="{StaticResource MenuButton}" Content="Recursividad" Click="Recursivo_Click" />
 
                 </StackPanel>

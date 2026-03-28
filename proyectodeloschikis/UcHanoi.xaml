@@ -35,6 +35,26 @@
                     Width="160" Height="38" Margin="15,0,0,0"
                     Background="#22C55E" Foreground="White" FontWeight="Bold"/>
             </StackPanel>
+            <StackPanel>
+            <TextBlock Text="Velocidad:" 
+                Foreground="#A78BFA" 
+                FontSize="16" 
+                VerticalAlignment="Center"
+                Margin="0,0,10,0"/>
+            <Slider x:Name="sliderVelocidad"
+             Width="200"
+             Minimum="10"
+             Maximum="1000"
+             Value="150"
+             TickFrequency="50"
+             IsSnapToTickEnabled="True"/>
+
+            <TextBlock x:Name="txtVelocidad"
+                Text="150 ms"
+                Foreground="White"
+                Margin="10,0,0,0"
+                VerticalAlignment="Center"/>
+            </StackPanel>
 
             <!-- Las 3 Torres -->
             <Grid Height="320" HorizontalAlignment="Center">

@@ -114,6 +114,7 @@
                 </DockPanel>
 
                 <Button Content="Ordenar Descendente" Style="{StaticResource MenuButton}" Margin="0,8,0,0" Click="Ordenar_Click"/>
+                <Button Content="Ordenar Ascendente" Style="{StaticResource MenuButton}" Margin="0,8,0,0" Click="OrdenarAscendente_Click"/>
                 <Button Content="Limpiar Lista" Style="{StaticResource MenuButton}" Cursor="Hand" Margin="0,8,0,0" Click="Limpiar_Click"/>
 
             </StackPanel>

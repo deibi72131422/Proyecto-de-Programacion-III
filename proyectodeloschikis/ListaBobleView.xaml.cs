@@ -140,6 +140,26 @@ namespace proyectodeloschikis
 
             Mostrar();
         }
+        void OrdenarDescendente_Click(object sender, RoutedEventArgs e)
+        {
+            validacion.EjecutarSeguro(() =>
+            {
+                if (lista.Count == 0)
+                {
+                    MessageBox.Show("La lista está vacía", "Advertencia",
+                        MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+                List<int> temp = lista.ToList();
+                temp.Sort();
+                temp.Reverse();
+                lista.Clear();
+                foreach (int m in temp)
+                    lista.AddLast(m);
+
+                Mostrar();
+            });
+        }
 
         // 🔹 limpiar lista
         void Limpiar_Click(object sender, RoutedEventArgs e)
